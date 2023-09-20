@@ -1,0 +1,161 @@
+use("libraryCampus");
+db.usuario.insertMany([
+  {
+    cc: 12,
+    nombre_completo: "Nicolas",
+    edad: 23,
+    sexo: "Hombre",
+    rol: "admin",
+    permisos: { "*": "1.0.0" },
+    contrasena: "123",
+    deuda: 0,
+    reportes: [],
+    prestamos: [],
+    reservados: [],
+  },
+  {
+    cc: 15433,
+    nombre_completo: "Daniela",
+    edad: 23,
+    sexo: "Mujer",
+    rol: "user",
+    permisos: { "*": "1.0.0" },
+    contrasena: "123",
+    deuda: 0,
+    reportes: [],
+    prestamos: [],
+    reservados: [],
+  },
+  {
+    cc: 1324,
+    nombre_completo: "Jhon",
+    edad: 23,
+    sexo: "Hombre",
+    rol: "user",
+    permisos: { "*": "1.0.0" },
+    contrasena: "123",
+    deuda: 0,
+    reportes: [],
+    prestamos: [],
+    reservados: [],
+  },
+  {
+    cc: 1534,
+    nombre_completo: "Fernanda",
+    edad: 23,
+    sexo: "Mujer",
+    rol: "user",
+    permisos: { "*": "1.0.0" },
+    contrasena: "123",
+    deuda: 0,
+    reportes: [],
+    prestamos: [],
+    reservados: [],
+  },{
+    cc: 6543,
+    nombre_completo: "Carlos",
+    edad: 23,
+    sexo: "Hombre",
+    rol: "user",
+    permisos: { "*": "1.0.0" },
+    contrasena: "123",
+    deuda: 0,
+    reportes: [],
+    prestamos: [],
+    reservados: [],
+  }
+]);
+
+use("libraryCampus");
+db.libro.insertOne ({
+    titulo: "Libro 1",
+    autor: "Autor 1",
+    editorial: "Editorial 1",
+    fecha_publicacion: "2023-01-15",
+    genero: "Género 1",
+    idioma: "Español",
+    sinopsis: "Sinopsis del Libro 1",
+    portada: "portada1.jpg",
+    paginas: 300,
+    precio: 19.99,
+    estado: "Disponible",
+    cantidad: 3
+  })
+
+
+
+
+use("libraryCampus");
+db.libro.insertMany([
+  {
+    titulo: "Libro 1",
+    autor: "Autor 1",
+    editorial: "Editorial 1",
+    fecha_publicacion: "2023-01-15",
+    genero: "Género 1",
+    idioma: "Español",
+    sinopsis: "Sinopsis del Libro 1",
+    portada: "portada1.jpg",
+    paginas: 300,
+    precio: 19.99,
+    estado: "Disponible",
+    cantidad: 3
+  },
+  {
+    titulo: "Libro 2",
+    autor: "Autor 2",
+    editorial: "Editorial 2",
+    fecha_publicacion: "2023-02-10",
+    genero: "Género 2",
+    idioma: "Español",
+    sinopsis: "Sinopsis del Libro 2",
+    portada: "portada2.jpg",
+    paginas: 400,
+    precio: 25.99,
+    estado: "Disponible",
+    cantidad: 2
+  },
+  {
+    titulo: "Libro 3",
+    autor: "Autor 3",
+    editorial: "Editorial 3",
+    fecha_publicacion: "2023-03-20",
+    genero: "Género 3",
+    idioma: "Español",
+    sinopsis: "Sinopsis del Libro 3",
+    portada: "portada3.jpg",
+    paginas: 320,
+    precio: 29.99,
+    estado: "Disponible",
+    cantidad: 1
+  },
+  {
+    titulo: "Libro 4",
+    autor: "Autor 4",
+    editorial: "Editorial 4",
+    fecha_publicacion: "2023-04-05",
+    genero: "Género 4",
+    idioma: "Español",
+    sinopsis: "Sinopsis del Libro 4",
+    portada: "portada4.jpg",
+    paginas: 280,
+    precio: 22.99,
+    estado: "Disponible",
+    cantidad: 4
+  },
+  {
+    titulo: "Libro 5",
+    autor: "Autor 5",
+    editorial: "Editorial 5",
+    fecha_publicacion: "2023-05-12",
+    genero: "Género 5",
+    idioma: "Español",
+    sinopsis: "Sinopsis del Libro 5",
+    portada: "portada5.jpg",
+    paginas: 350,
+    precio: 18.99,
+    estado: "Disponible",
+    cantidad: 5
+  }
+]);
+

@@ -159,15 +159,17 @@ use("libraryCampus");
 db.libro.aggregate([
   {
     $match: {
-      titulo:"Libro 1"
+      titulo: "Libro 1"
     }
   },
-  {$project: {
-    _id:0,
-    titulo:1,
-    cantidad:1,
-    precio:1
-  }}
+  {
+    $project: {
+      _id: 0,
+      titulo: 1,
+      cantidad: 1,
+      precio: 1
+    }
+  }
 ]);
 //Obtener una lista de todos los autores distintos en la biblioteca.\
 use("libraryCampus")
@@ -177,15 +179,15 @@ use("libraryCampus")
 db.usuario.aggregate([
   {
     $match: {
-    nombre_completo:"Nicolas"
+      nombre_completo: "Nicolas"
     }
-  },{
-    $unwind:"$prestamos"
+  }, {
+    $unwind: "$prestamos"
   },
   {
     $project: {
-      _id:0,
-      prestamos:1,
+      _id: 0,
+      prestamos: 1,
     }
   }
 ])
@@ -195,15 +197,60 @@ use("libraryCampus")
 db.usuario.aggregate([
   {
     $match: {
-    deuda:{$gt:0}
+      deuda: { $gt: 0 }
     }
-  },{
-    $unwind:"$deuda"
+  }, {
+    $unwind: "$deuda"
   },
   {
     $project: {
-      _id:0,
-      deuda:1,
+      _id: 0,
+      deuda: 1,
     }
   }
 ])
+//Encontrar todos los libros publicados en un año específico.
+use("libraryCampus")
+db.libro.aggregate([{
+  $match: {
+    fecha_publicacion: { $gte: new Date("2015-01-01").toISOString(), $lte: new Date("2015-12-31").toISOString() }
+  }
+}])
+
+
+//Listar los usuarios que tienen un libro en préstamo en este momento.
+
+use("libraryCampus")
+db.usuario.aggregate({
+  $match: {
+    "prestamos": { $gt: [] }
+  }
+})
+//Mostrar la fecha de devolución más próxima para un usuario en particular.
+
+use("libraryCampus")
+db.usuario.aggregate({
+  $unwind: "$prestamos"
+}, {
+
+  $match: {
+    "prestamos.devolucion": { $gt: new Date().toISOString() }
+  }
+})
+
+//Encontrar todos los libros que pertenecen a una categoría específica.
+
+use("libraryCampus")
+db.libro.aggregate({
+  $match:{
+    "genero":"Terror"
+  }
+})
+//Listar los usuarios que tienen multas por un monto superior a un valor determinado.
+
+use("libraryCampus")
+db.usuario.aggregate({
+  $match:{
+    deuda:{$gt:100}
+  }
+})

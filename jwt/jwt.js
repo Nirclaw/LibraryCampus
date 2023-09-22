@@ -1,16 +1,18 @@
 
 import { SignJWT, jwtVerify } from "jose"
-import { db } from "../conexion/connect.js"
-import { MY_KEY } from "../config/variables.js"
+import { DB, MY_KEY } from "../config/variables.js"
 import { ObjectId } from "mongodb"
+
 
 export const CrearToken = async (req, res) => {
     if (Object.keys(req.body).length === 0)
         return res.status(400).send({ status: 400, message: "Datos no enviados" })
 
-    const busqueda = await db.collection("usuario").findOne({
-        $and: [{ cc: req.body.cc }, { contrasena: req.body.contrasena }]
-    }).toArray()
+    const busqueda = await DB.collection("usuario").aggregate([{
+        $match: {
+            $and: [{ cc: req.body.cc }, { contrasena: req.body.contrasena }]
+        }
+    }]).toArray()
 
     if (Object.keys(busqueda).length === 0)
         return res.status(400).send({ status: 400, message: "el usuario no existe" })
@@ -25,7 +27,7 @@ export const CrearToken = async (req, res) => {
         .sign(encode.encode(MY_KEY))
 
 
-    const llave = "Bearer" + create
+    const llave = "Bearer " + create
     res.send({ status: 200, message: llave })
 }
 
@@ -34,8 +36,8 @@ export const validarToken = async (req, Token) => {
         const encode = new TextEncoder()
         const jwtData = await jwtVerify(Token, encode.encode(MY_KEY))
 
-        let busqueda = await db.collection("roles").findOne({
-            _id: new ObjectId(jwData.payload.id[0]._id),
+        let busqueda = await DB.collection("roles").findOne({
+            _id: new ObjectId(jwtData.payload.id[0]._id),
             [`permisos.${req.baseUrl}`]: `${req.headers["accept-version"]}`,
         });
         let { _id, permisos, ...Usuario } = busqueda;

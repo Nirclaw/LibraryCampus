@@ -254,3 +254,6 @@ db.usuario.aggregate({
     deuda:{$gt:100}
   }
 })
+
+use("libraryCampus")
+db.usuario.findOne()

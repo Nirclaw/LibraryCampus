@@ -140,7 +140,7 @@ db.usuario.aggregate([
   },
   {
     $match: {
-      "prestamos.devolucion": { $gt: new Date().toISOString() },
+      "prestamos.devolucion": { $lt: new Date().toISOString() },
     },
   },
   {
@@ -159,101 +159,128 @@ use("libraryCampus");
 db.libro.aggregate([
   {
     $match: {
-      titulo: "Libro 1"
-    }
+      titulo: "Libro 1",
+    },
   },
   {
     $project: {
       _id: 0,
       titulo: 1,
       cantidad: 1,
-      precio: 1
-    }
-  }
+      precio: 1,
+    },
+  },
 ]);
-//Obtener una lista de todos los autores distintos en la biblioteca.\
-use("libraryCampus")
-db.libro.distinct("autor")
+//Obtener una lista de todos los autores distintos en la biblioteca.
+use("libraryCampus");
+db.libro.distinct("autor");
 ///Encontrar los libros que han sido prestados por un usuario específico.
-use("libraryCampus")
+use("libraryCampus");
 db.usuario.aggregate([
   {
     $match: {
-      nombre_completo: "Nicolas"
-    }
-  }, {
-    $unwind: "$prestamos"
+      nombre_completo: "Nicolas",
+    },
+  },
+  {
+    $unwind: "$prestamos",
   },
   {
     $project: {
       _id: 0,
       prestamos: 1,
-    }
-  }
-])
+    },
+  },
+]);
 
 //Mostrar los usuarios que tienen deudas
-use("libraryCampus")
+use("libraryCampus");
 db.usuario.aggregate([
   {
     $match: {
-      deuda: { $gt: 0 }
-    }
-  }, {
-    $unwind: "$deuda"
+      deuda: { $gt: 0 },
+    },
+  },
+  {
+    $unwind: "$deuda",
   },
   {
     $project: {
       _id: 0,
       deuda: 1,
-    }
-  }
-])
+    },
+  },
+]);
 //Encontrar todos los libros publicados en un año específico.
-use("libraryCampus")
-db.libro.aggregate([{
-  $match: {
-    fecha_publicacion: { $gte: new Date("2015-01-01").toISOString(), $lte: new Date("2015-12-31").toISOString() }
-  }
-}])
-
+use("libraryCampus");
+db.libro.aggregate([
+  {
+    $match: {
+      fecha_publicacion: {
+        $gte: new Date("2015-01-01").toISOString(),
+        $lte: new Date("2020-12-31").toISOString(),
+      },
+    },
+  },
+]);
 
 //Listar los usuarios que tienen un libro en préstamo en este momento.
 
-use("libraryCampus")
+use("libraryCampus");
 db.usuario.aggregate({
   $match: {
-    "prestamos": { $gt: [] }
-  }
-})
+    prestamos: { $gt: [] },
+  },
+});
 //Mostrar la fecha de devolución más próxima para un usuario en particular.
 
-use("libraryCampus")
-db.usuario.aggregate({
-  $unwind: "$prestamos"
-}, {
-
-  $match: {
-    "prestamos.devolucion": { $gt: new Date().toISOString() }
+use("libraryCampus");
+db.usuario.aggregate(
+  {
+    $unwind: "$prestamos",
+  },
+  {
+    $match: {
+      $and: [
+        { cc: 12 },
+        { "prestamos.devolucion": { $gt: new Date().toISOString() } },
+      ],
+    },
   }
-})
+);
 
 //Encontrar todos los libros que pertenecen a una categoría específica.
 
-use("libraryCampus")
-db.libro.aggregate({
-  $match:{
-    "genero":"Terror"
-  }
-})
+use("libraryCampus");
+db.libro.aggregate([
+  {
+    $match: {
+      genero: "Terror",
+    },
+  },
+]);
 //Listar los usuarios que tienen multas por un monto superior a un valor determinado.
 
-use("libraryCampus")
-db.usuario.aggregate({
-  $match:{
-    deuda:{$gt:100}
-  }
-})
+use("libraryCampus");
+db.usuario.aggregate([
+  {
+    $match: {
+      deuda: { $gt: 100 },
+    },
+  },
+]);
 
-use("libraryCampus")
-db.usuario.findOne()
+use("libraryCampus");
+db.usuario.findOne();
+
+use("libraryCampus");
+db.usuario.findOne({
+  $and: [{ cc: 12 }, { "prestamos.titulo": "Libro 2" }],
+});
+use("libraryCampus");
+db.libro.findOne(
+  {
+    titulo: "Libro 3",
+    cantidad:{$gte:0}
+  }
+)

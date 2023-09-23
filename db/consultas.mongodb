@@ -278,9 +278,18 @@ db.usuario.findOne({
   $and: [{ cc: 12 }, { "prestamos.titulo": "Libro 2" }],
 });
 use("libraryCampus");
-db.libro.findOne(
+db.libro.findOne({
+  titulo: "Libro 3",
+  cantidad: { $gte: 0 },
+});
+
+
+use("libraryCampus");
+db.usuario.updateOne(
   {
-    titulo: "Libro 3",
-    cantidad:{$gte:0}
+    cc: 12,
+  },
+  {
+    $pull: { prestamos: { titulo: "Libro 1" } },
   }
-)
+);

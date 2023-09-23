@@ -463,3 +463,101 @@ export const PrestamoLibro = async (req, res) => {
     res.status(500).send({ status: 200, message: error });
   }
 };
+
+//devolucion de un libro
+
+export const devolucion = async (req, res) => {
+  try {
+    let usuario = await DB.collection("usuario");
+
+    let libroprestado = await usuario
+      .aggregate([
+        {
+          $match: {
+            $and: [
+              { cc: req.body.cc },
+              { "prestamos.titulo": req.body.titulo },
+            ],
+          },
+        },
+        {
+          $project: {
+            resultado: {
+              $filter: {
+                input: "$prestamos",
+                as: "prestamo",
+                cond: { $eq: ["$$prestamo.titulo", req.body.titulo] },
+              },
+            },
+          },
+        },
+        {
+          $unwind: "$resultado",
+        },
+      ])
+      .toArray();
+
+    if (libroprestado.length === 0)
+      return res.status(500).send({
+        status: 500,
+        message: "Este libro no se encuentra prestado por el usuario",
+      });
+
+    if (new Date().toISOString() > libroprestado[0].resultado.devolucion) {
+      await usuario.updateOne(
+        {
+          cc: req.body.cc,
+        },
+        {
+          $inc: { deuda: +10 },
+        }
+      );
+      await usuario.updateOne(
+        {
+          cc: req.body.cc,
+        },
+        {
+          $pull: { prestamos: { titulo: req.body.titulo } },
+        }
+      );
+
+      await libro.updateOne(
+        {
+          titulo: req.body.titulo,
+        },
+        {
+          $inc: { cantidad: 1 },
+        }
+      );
+      return res.send({
+        status: 200,
+        message:
+          "Se ha devuelto el libro correctamente y al usuario se le ha colocado  una multa de $10",
+      });
+    }
+
+    await usuario.updateOne(
+      {
+        cc: req.body.cc,
+      },
+      {
+        $pull: { prestamos: { titulo: req.body.titulo } },
+      }
+    );
+
+    await libro.updateOne(
+      {
+        titulo: req.body.titulo,
+      },
+      {
+        $inc: { cantidad: 1 },
+      }
+    );
+
+    res
+      .status(200)
+      .send({ status: 200, message: "Se ha devuelto el libro correctamente" });
+  } catch (error) {
+    res.status(500).send({ status: 200, message: error });
+  }
+};

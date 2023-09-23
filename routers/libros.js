@@ -10,6 +10,7 @@ import {
   autores,
   categoria,
   deudamayorde,
+  devolucion,
   ejemplares,
   fechadevolucionProxima,
   mora,
@@ -85,21 +86,43 @@ appLibros.get(
   })
 );
 
-appLibros.get("/usuarioPrestamoenestemomento",VERSION({
-  "1.0.0":usuarioPrestamoenestemomento
-}))
+appLibros.get(
+  "/usuarioPrestamoenestemomento",
+  VERSION({
+    "1.0.0": usuarioPrestamoenestemomento,
+  })
+);
 
-appLibros.get("/fechadevolucionProxima",VERSION({
-  "1.0.0":fechadevolucionProxima
-}))
+appLibros.get(
+  "/fechadevolucionProxima",
+  VERSION({
+    "1.0.0": fechadevolucionProxima,
+  })
+);
 
-appLibros.get("/categoria",VERSION({
-  "1.0.0":categoria
-}))
-appLibros.get("/deudamayorde",VERSION({
-  "1.0.0":deudamayorde
-}))
+appLibros.get(
+  "/categoria",
+  VERSION({
+    "1.0.0": categoria,
+  })
+);
+appLibros.get(
+  "/deudamayorde",
+  VERSION({
+    "1.0.0": deudamayorde,
+  })
+);
 
-appLibros.post("/prestamoLibro",VERSION({
-  "1.0.0":PrestamoLibro
-}))
+appLibros.post(
+  "/prestamoLibro",
+  VERSION({
+    "1.0.0": PrestamoLibro,
+  })
+);
+
+appLibros.post(
+  "/devolucion",
+  VERSION({
+    "1.0.0": devolucion,
+  })
+);

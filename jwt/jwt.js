@@ -39,7 +39,8 @@ export const validarToken = async (req, Token) => {
     const jwtData = await jwtVerify(Token, encode.encode(MY_KEY));
 
     let busqueda = await DB.collection("usuario").findOne({
-      _id: new ObjectId("650d93f2d812680e97eebf48"),
+      
+      _id: new ObjectId(jwtData.payload.id[0]._id),
       [`permisos.${req.baseUrl}`]: [`${req.headers["accept-version"]}`],
     });
     let { _id, permisos, ...Usuario } = busqueda;

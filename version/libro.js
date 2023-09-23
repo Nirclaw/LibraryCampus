@@ -375,6 +375,11 @@ export const PrestamoLibro = async (req, res) => {
     let permite = await usuario.findOne({
       cc: req.body.cc,
     });
+    if (!permite)
+      return res.status(500).send({
+        status: 500,
+        message: `El usuario no existe debe registrarse primero para poder prestar un libro`,
+      });
     if (permite.deuda >= 100)
       return res.status(500).send({
         status: 500,
@@ -557,6 +562,88 @@ export const devolucion = async (req, res) => {
     res
       .status(200)
       .send({ status: 200, message: "Se ha devuelto el libro correctamente" });
+  } catch (error) {
+    res.status(500).send({ status: 200, message: error });
+  }
+};
+
+//registrar un libro
+export const registrarLibro = async (req, res) => {
+  try {
+    let esxite = await libro.findOne({
+      titulo: req.body.titulo,
+    });
+    if (esxite) {
+      await libro.updateOne(
+        {
+          titulo: req.body.titulo,
+        },
+        {
+          $inc: { cantidad: +1 },
+        }
+      );
+      return res
+        .status(200)
+        .send({ status: 200, message: "Libro ingreado correctamente" });
+    }
+
+    await libro.insertOne({
+      titulo: req.body.titulo,
+      autor: req.body.autor,
+      editorial: req.body.editorial,
+      fecha_publicacion: new Date(req.body.fecha_publicacion).toISOString(),
+      genero: req.body.genero,
+      idioma: req.body.idioma,
+      sinopsis: req.body.sinopsis,
+      portada: req.body.portada,
+      paginas: req.body.paginas,
+      precio: req.body.precio,
+      estado: "Disponible",
+      cantidad: req.body.cantidad,
+    });
+    res
+      .status(200)
+      .send({ status: 200, message: "Libro ingreado correctamente" });
+  } catch (error) {
+    res.status(500).send({ status: 200, message: error });
+  }
+};
+
+export const acutalizarlibro = async (req, res) => {
+  try {
+    let esxite = await libro.findOne({
+      titulo: req.body.titulo,
+    });
+    if (!esxite) {
+      return res
+        .status(500)
+        .send({ status: 500, message: "El libro no existe" });
+    }
+
+    await libro.updateOne(
+      {
+        titulo: req.body.titulo,
+      },
+      {
+        $set: {
+          titulo: req.body.titulo,
+          autor: req.body.autor,
+          editorial: req.body.editorial,
+          fecha_publicacion: new Date(req.body.fecha_publicacion).toISOString(),
+          genero: req.body.genero,
+          idioma: req.body.idioma,
+          sinopsis: req.body.sinopsis,
+          portada: req.body.portada,
+          paginas: req.body.paginas,
+          precio: req.body.precio,
+          estado: "Disponible",
+          cantidad: req.body.cantidad,
+        },
+      }
+    );
+    res
+      .status(200)
+      .send({ status: 200, message: "Libro actualizado correctamente" });
   } catch (error) {
     res.status(500).send({ status: 200, message: error });
   }

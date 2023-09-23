@@ -6,6 +6,7 @@ import {
   PrestadoaUsuario,
   PrestamoLibro,
   Prestamos,
+  acutalizarlibro,
   atrasados,
   autores,
   categoria,
@@ -15,6 +16,7 @@ import {
   fechadevolucionProxima,
   mora,
   publicadosenunRangoespecifico,
+  registrarLibro,
   usuarioPrestamoenestemomento,
 } from "../version/libro.js";
 import passport from "../jwt/passport.js";
@@ -126,3 +128,11 @@ appLibros.post(
     "1.0.0": devolucion,
   })
 );
+
+appLibros.post("/registrar",VERSION({
+  "1.0.0":registrarLibro
+}))
+
+appLibros.put("/actualizar",VERSION({
+  "1.0.0":acutalizarlibro
+}))

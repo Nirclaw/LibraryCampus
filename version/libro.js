@@ -1,3 +1,4 @@
+import { validationResult } from "express-validator";
 import { DB } from "../config/variables.js";
 let libro = await DB.collection("libro");
 
@@ -23,6 +24,10 @@ export const Getlibros = async (req, res) => {
 //Encontrar todos los libros escritos por un autor específico.
 export const Autor = async (req, res) => {
   try {
+    const error = validationResult(req);
+    if (!error.isEmpty())
+      return res.status(500).json({ status: 500, message: error.errors[0] });
+
     let data = await libro
       .aggregate([
         {
@@ -123,6 +128,10 @@ export const atrasados = async (req, res) => {
 
 export const ejemplares = async (req, res) => {
   try {
+    const error = validationResult(req);
+    if (!error.isEmpty())
+      return res.status(500).json({ status: 500, message: error.errors[0] });
+
     let data = await libro
       .aggregate([
         {
@@ -161,12 +170,16 @@ export const autores = async (req, res) => {
 
 export const PrestadoaUsuario = async (req, res) => {
   try {
+    const error = validationResult(req);
+    if (!error.isEmpty())
+      return res.status(500).json({ status: 500, message: error.errors[0] });
+
     let usuario = await DB.collection("usuario");
     let data = await usuario
       .aggregate([
         {
           $match: {
-            cc: req.body.cc,
+            cc: number,
           },
         },
         {
@@ -232,6 +245,10 @@ export const mora = async (req, res) => {
 //Encontrar todos los libros publicados en un rango de anos.
 export const publicadosenunRangoespecifico = async (req, res) => {
   try {
+    const error = validationResult(req);
+    if (!error.isEmpty())
+      return res.status(500).json({ status: 500, message: error.errors[0] });
+
     let data = await libro
       .aggregate([
         {
@@ -284,7 +301,7 @@ export const usuarioPrestamoenestemomento = async (req, res) => {
   }
 };
 
-//Mostrar la fecha de devolución más próxima para un usuario en particular.
+//Mostrar la fecha de devolución más próxima
 export const fechadevolucionProxima = async (req, res) => {
   try {
     let usuario = await DB.collection("usuario");
@@ -318,6 +335,10 @@ export const fechadevolucionProxima = async (req, res) => {
 //Encontrar todos los libros que pertenecen a una categoría específica.
 export const categoria = async (req, res) => {
   try {
+    const error = validationResult(req);
+    if (!error.isEmpty())
+      return res.status(500).json({ status: 500, message: error.errors[0] });
+
     let data = await libro
       .aggregate([
         {
@@ -343,6 +364,10 @@ export const categoria = async (req, res) => {
 
 export const deudamayorde = async (req, res) => {
   try {
+    const error = validationResult(req);
+    if (!error.isEmpty())
+      return res.status(500).json({ status: 500, message: error.errors[0] });
+
     let usuario = await DB.collection("usuario");
     let data = await usuario
       .aggregate([
@@ -370,10 +395,14 @@ export const deudamayorde = async (req, res) => {
 
 export const PrestamoLibro = async (req, res) => {
   try {
+    const error = validationResult(req);
+    if (!error.isEmpty())
+      return res.status(500).json({ status: 500, message: error.errors[0] });
+    let numero = parseInt(req.body.cc);
     let usuario = await DB.collection("usuario");
 
     let permite = await usuario.findOne({
-      cc: req.body.cc,
+      cc: numero,
     });
     if (!permite)
       return res.status(500).send({
@@ -425,7 +454,7 @@ export const PrestamoLibro = async (req, res) => {
     Object.assign(nuevaCopia, fechaEntrega);
 
     let yaposee = await usuario.findOne({
-      $and: [{ cc: req.body.cc }, { "prestamos.titulo": req.body.titulo }],
+      $and: [{ cc: numero }, { "prestamos.titulo": req.body.titulo }],
     });
     if (yaposee)
       return res.status(500).send({
@@ -444,7 +473,7 @@ export const PrestamoLibro = async (req, res) => {
 
     await usuario.updateOne(
       {
-        cc: req.body.cc,
+        cc: numero,
       },
       {
         $push: {
@@ -473,16 +502,27 @@ export const PrestamoLibro = async (req, res) => {
 
 export const devolucion = async (req, res) => {
   try {
+    const error = validationResult(req);
+    if (!error.isEmpty())
+      return res.status(500).json({ status: 500, message: error.errors[0] });
+
     let usuario = await DB.collection("usuario");
+    let number = parseInt(req.body.cc);
+
+    let permite = await usuario.findOne({
+      cc: number,
+    });
+    if (!permite)
+      return res.status(500).send({
+        status: 500,
+        message: `El usuario no existe debe registrarse primero para poder prestar un libro`,
+      });
 
     let libroprestado = await usuario
       .aggregate([
         {
           $match: {
-            $and: [
-              { cc: req.body.cc },
-              { "prestamos.titulo": req.body.titulo },
-            ],
+            $and: [{ cc: number }, { "prestamos.titulo": req.body.titulo }],
           },
         },
         {
@@ -511,7 +551,7 @@ export const devolucion = async (req, res) => {
     if (new Date().toISOString() > libroprestado[0].resultado.devolucion) {
       await usuario.updateOne(
         {
-          cc: req.body.cc,
+          cc: number,
         },
         {
           $inc: { deuda: +10 },
@@ -519,7 +559,7 @@ export const devolucion = async (req, res) => {
       );
       await usuario.updateOne(
         {
-          cc: req.body.cc,
+          cc: number,
         },
         {
           $pull: { prestamos: { titulo: req.body.titulo } },
@@ -543,7 +583,7 @@ export const devolucion = async (req, res) => {
 
     await usuario.updateOne(
       {
-        cc: req.body.cc,
+        cc: number,
       },
       {
         $pull: { prestamos: { titulo: req.body.titulo } },
@@ -570,6 +610,10 @@ export const devolucion = async (req, res) => {
 //registrar un libro
 export const registrarLibro = async (req, res) => {
   try {
+    const error = validationResult(req);
+    if (!error.isEmpty())
+      return res.status(500).json({ status: 500, message: error.errors[0] });
+
     let esxite = await libro.findOne({
       titulo: req.body.titulo,
     });
@@ -611,6 +655,10 @@ export const registrarLibro = async (req, res) => {
 
 export const acutalizarlibro = async (req, res) => {
   try {
+    const error = validationResult(req);
+    if (!error.isEmpty())
+      return res.status(500).json({ status: 500, message: error.errors[0] });
+
     let esxite = await libro.findOne({
       titulo: req.body.titulo,
     });

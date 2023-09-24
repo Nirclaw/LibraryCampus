@@ -21,6 +21,16 @@ import {
 } from "../version/libro.js";
 import passport from "../jwt/passport.js";
 import { limite } from "../config/limit.js";
+import {
+  autorDTO,
+  cc,
+  devolucionDto,
+  fechaInicioFin,
+  prestamo,
+  registrar,
+  titulo,
+  valor,
+} from "../DTO/libro.js";
 
 export const appLibros = Router();
 
@@ -35,6 +45,7 @@ appLibros.get(
 
 appLibros.get(
   "/autor",
+  autorDTO,
   VERSION({
     "1.0.0": Autor,
   })
@@ -56,6 +67,7 @@ appLibros.get(
 
 appLibros.get(
   "/ejemplares",
+  titulo,
   VERSION({
     "1.0.0": ejemplares,
   })
@@ -70,6 +82,7 @@ appLibros.get(
 
 appLibros.get(
   "/PrestadoaUsuario",
+  cc,
   VERSION({
     "1.0.0": PrestadoaUsuario,
   })
@@ -83,6 +96,7 @@ appLibros.get(
 
 appLibros.get(
   "/publicadosenunRangoespecifico",
+  fechaInicioFin,
   VERSION({
     "1.0.0": publicadosenunRangoespecifico,
   })
@@ -104,12 +118,14 @@ appLibros.get(
 
 appLibros.get(
   "/categoria",
+  categoria,
   VERSION({
     "1.0.0": categoria,
   })
 );
 appLibros.get(
   "/deudamayorde",
+  valor,
   VERSION({
     "1.0.0": deudamayorde,
   })
@@ -117,6 +133,7 @@ appLibros.get(
 
 appLibros.post(
   "/prestamoLibro",
+  prestamo,
   VERSION({
     "1.0.0": PrestamoLibro,
   })
@@ -124,15 +141,24 @@ appLibros.post(
 
 appLibros.post(
   "/devolucion",
+  devolucionDto,
   VERSION({
     "1.0.0": devolucion,
   })
 );
 
-appLibros.post("/registrar",VERSION({
-  "1.0.0":registrarLibro
-}))
+appLibros.post(
+  "/registrar",
+  registrar,
+  VERSION({
+    "1.0.0": registrarLibro,
+  })
+);
 
-appLibros.put("/actualizar",VERSION({
-  "1.0.0":acutalizarlibro
-}))
+appLibros.put(
+  "/actualizar",
+  registrar,
+  VERSION({
+    "1.0.0": acutalizarlibro,
+  })
+);

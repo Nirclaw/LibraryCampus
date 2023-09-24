@@ -1,12 +1,13 @@
 import { Router } from "express";
 import { limite } from "../config/limit.js";
 import { DB } from "../config/variables.js";
+import { registrar } from "../DTO/libro.js";
 export const appRegister = Router();
 let usuario = await DB.collection("usuario");
 
 appRegister.use(limite());
 
-appRegister.post("/", async (req, res) => {
+appRegister.post("/",registrar, async (req, res) => {
   try {
     let data = await usuario.findOne({
       cc: req.body.cc,

@@ -1,9 +1,14 @@
+import { validationResult } from "express-validator";
 import { DB } from "../config/variables.js";
 
 let usuario = await DB.collection("usuario");
 
 export const actualizar = async (req, res) => {
   try {
+    const error = validationResult(req);
+    if (!error.isEmpty())
+      return res.status(500).json({ status: 500, message: error.errors[0] });
+
     let existe = await usuario.findOne({
       cc: req.body.cc,
     });

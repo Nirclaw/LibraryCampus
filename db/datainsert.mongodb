@@ -6,7 +6,7 @@ db.usuario.insertMany([
     edad: 23,
     sexo: "Hombre",
     rol: "admin",
-    permisos: { "*": "1.0.0" },
+    permisos: { "/usuario": ["1.0.0"], "/libro": ["1.0.0"] },
     contrasena: "123",
     deuda: 0,
     reportes: [],
@@ -19,7 +19,7 @@ db.usuario.insertMany([
     edad: 23,
     sexo: "Mujer",
     rol: "user",
-    permisos: { "*": "1.0.0" },
+    permisos: { "/usuario": ["1.0.0"], "/libro": ["1.0.0"] },
     contrasena: "123",
     deuda: 0,
     reportes: [],
@@ -51,7 +51,7 @@ db.usuario.insertMany([
     reportes: [],
     prestamos: [],
     reservados: [],
-  },{
+  }, {
     cc: 6543,
     nombre_completo: "Carlos",
     edad: 23,
@@ -67,20 +67,20 @@ db.usuario.insertMany([
 ]);
 
 use("libraryCampus");
-db.libro.insertOne ({
-    titulo: "Libro 1",
-    autor: "Autor 1",
-    editorial: "Editorial 1",
-    fecha_publicacion: "2023-01-15",
-    genero: "Género 1",
-    idioma: "Español",
-    sinopsis: "Sinopsis del Libro 1",
-    portada: "portada1.jpg",
-    paginas: 300,
-    precio: 19.99,
-    estado: "Disponible",
-    cantidad: 3
-  })
+db.libro.insertOne({
+  titulo: "Libro 1",
+  autor: "Autor 1",
+  editorial: "Editorial 1",
+  fecha_publicacion: "2023-01-15",
+  genero: "Género 1",
+  idioma: "Español",
+  sinopsis: "Sinopsis del Libro 1",
+  portada: "portada1.jpg",
+  paginas: 300,
+  precio: 19.99,
+  estado: "Disponible",
+  cantidad: 3
+})
 
 
 
@@ -156,7 +156,7 @@ db.libro.insertMany([
     precio: 18.99,
     estado: "Disponible",
     cantidad: 5
-  },{
+  }, {
     titulo: "Libro 5",
     autor: "Autor 5",
     editorial: "Editorial 5",

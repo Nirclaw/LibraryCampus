@@ -1,8 +1,10 @@
-import React from 'react'
+import React from "react";
+import { FormularioNuevoLibro } from "../../components/Admin/Formularios/FormularioNuevoLibro";
 
 export const IngresarLinbro = () => {
   return (
-    <div className="Fondo-Adim"></div>
-
-  )
-}
+    <div className="Contenedor-Formulario">
+      <FormularioNuevoLibro  />
+    </div>
+  );
+};

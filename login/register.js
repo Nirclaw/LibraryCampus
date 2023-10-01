@@ -13,8 +13,8 @@ appRegister.post("/",registrar, async (req, res) => {
       cc: req.body.cc,
     });
     if (data)
-      return res.status(500).send({
-        status: 500,
+      return res.status(200).send({
+        status: 409,
         message: "La cedula ya esta registrada en el sistema",
       });
 
@@ -38,6 +38,6 @@ appRegister.post("/",registrar, async (req, res) => {
       .status(200)
       .send({ status: 200, message: "usuario creado exitosamente" });
   } catch (error) {
-    res.status(500).send({ status: 500, message: error });
+    res.status(200).send({ status: 500, message: error });
   }
 });

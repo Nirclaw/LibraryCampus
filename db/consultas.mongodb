@@ -1,3 +1,5 @@
+import { ObjectId } from "mongodb";
+
 use("libraryCampus");
 db.usuario.updateOne(
   {
@@ -173,7 +175,10 @@ db.libro.aggregate([
 ]);
 //Obtener una lista de todos los autores distintos en la biblioteca.
 use("libraryCampus");
-db.libro.distinct("autor");
+db.libro.distinct("genero");
+//todos los titulos
+use("libraryCampus");
+db.libro.distinct("titulo");
 ///Encontrar los libros que han sido prestados por un usuario específico.
 use("libraryCampus");
 db.usuario.aggregate([
@@ -255,7 +260,7 @@ use("libraryCampus");
 db.libro.aggregate([
   {
     $match: {
-      genero: "Terror",
+      genero: "Macho",
     },
   },
 ]);
@@ -283,7 +288,6 @@ db.libro.findOne({
   cantidad: { $gte: 0 },
 });
 
-
 use("libraryCampus");
 db.usuario.updateOne(
   {
@@ -291,5 +295,26 @@ db.usuario.updateOne(
   },
   {
     $pull: { prestamos: { titulo: "Libro 1" } },
+  }
+);
+use("libraryCampus");
+db.libro.updateOne(
+  {
+    _id: new ObjectId("650f6c9ee202bcc52893149e"),
+  },
+  {
+    $set: {
+      titulo: "Nicolas",
+      autor: "100",
+      editorial: "a",
+      fecha_publicacion: "1990-01-10T00:00:00.000Z",
+      genero: "Macho",
+      idioma: "Espanol",
+      paginas: 100,
+      precio: 0.9,
+      sinopsis: "leanlo es kool",
+      portada: "aca va una url",
+      cantidad: 2,
+    },
   }
 );

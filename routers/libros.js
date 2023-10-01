@@ -2,10 +2,13 @@ import { Router } from "express";
 import { VERSION } from "../config/variables.js";
 import {
   Autor,
+  BuscarLibro,
+  Generos,
   Getlibros,
   PrestadoaUsuario,
   PrestamoLibro,
   Prestamos,
+  TitulosUnicos,
   acutalizarlibro,
   atrasados,
   autores,
@@ -35,11 +38,36 @@ import {
 export const appLibros = Router();
 
 appLibros.use(limite(), passport.authenticate("bearer", { session: false }));
-
+appLibros.get(
+  "/todainfo",
+  VERSION({
+    "1.0.0": TitulosUnicos,
+  })
+);
 appLibros.get(
   "/",
   VERSION({
     "1.0.0": Getlibros,
+  })
+);
+
+appLibros.get(
+  "/autores",
+  VERSION({
+    "1.0.0": autores,
+  })
+);
+
+appLibros.get(
+  "/generos",
+  VERSION({
+    "1.0.0": Generos,
+  })
+);
+appLibros.get(
+  "/:titulo",
+  VERSION({
+    "1.0.0": BuscarLibro,
   })
 );
 
@@ -67,18 +95,14 @@ appLibros.get(
 
 appLibros.get(
   "/ejemplares",
-  titulo,
   VERSION({
     "1.0.0": ejemplares,
   })
 );
 
-appLibros.get(
-  "/autores",
-  VERSION({
-    "1.0.0": autores,
-  })
-);
+
+
+
 
 appLibros.get(
   "/PrestadoaUsuario",
@@ -117,8 +141,7 @@ appLibros.get(
 );
 
 appLibros.get(
-  "/categoria",
-  categoria,
+  "/categoria/:categoria",
   VERSION({
     "1.0.0": categoria,
   })
@@ -162,3 +185,6 @@ appLibros.put(
     "1.0.0": acutalizarlibro,
   })
 );
+
+
+

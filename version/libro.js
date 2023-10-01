@@ -1,6 +1,21 @@
 import { validationResult } from "express-validator";
 import { DB } from "../config/variables.js";
+import { ObjectId } from "mongodb";
 let libro = await DB.collection("libro");
+
+//buscar un libro en especifico
+
+export const BuscarLibro = async (req, res) => {
+  try {
+    let data = await libro.findOne({
+      titulo: req.params.titulo,
+    });
+
+    res.status(200).send({ status: 200, data });
+  } catch (error) {
+    res.status(200).send({ status: 404, data });
+  }
+};
 
 //Mostrar todos los libros disponibles en la biblioteca.
 export const Getlibros = async (req, res) => {
@@ -15,9 +30,9 @@ export const Getlibros = async (req, res) => {
       ])
       .toArray();
 
-    res.send(data);
+    res.status(200).send({ status: 200, data });
   } catch (error) {
-    res.send("error");
+    res.send(error);
   }
 };
 
@@ -160,6 +175,24 @@ export const ejemplares = async (req, res) => {
 export const autores = async (req, res) => {
   try {
     let data = await libro.distinct("autor");
+    res.send(data);
+  } catch (error) {
+    res.send(error);
+  }
+};
+
+export const Generos = async (req, res) => {
+  try {
+    let data = await libro.distinct("genero");
+    res.send(data);
+  } catch (error) {
+    res.send(error);
+  }
+};
+
+export const TitulosUnicos = async (req, res) => {
+  try {
+    let data = await libro.distinct("titulo");
     res.send(data);
   } catch (error) {
     res.send(error);
@@ -337,17 +370,18 @@ export const categoria = async (req, res) => {
   try {
     const error = validationResult(req);
     if (!error.isEmpty())
-      return res.status(500).json({ status: 500, message: error.errors[0] });
+      return res.status(200).json({ status: 500, message: error.errors[0] });
 
     let data = await libro
       .aggregate([
         {
           $match: {
-            genero: req.body.categoria,
+            genero: req.params.categoria,
           },
         },
       ])
       .toArray();
+
     if (Object.keys(data).length === 0) {
       return res.send({
         status: 200,
@@ -356,7 +390,7 @@ export const categoria = async (req, res) => {
     }
     res.send(data);
   } catch (error) {
-    res.status(500).send({ status: 500, message: error });
+    res.status(200).send({ status: 500, message: error });
   }
 };
 
@@ -397,7 +431,7 @@ export const PrestamoLibro = async (req, res) => {
   try {
     const error = validationResult(req);
     if (!error.isEmpty())
-      return res.status(500).json({ status: 500, message: error.errors[0] });
+      return res.status(200).json({ status: 500, message: error.errors[0] });
     let numero = parseInt(req.body.cc);
     let usuario = await DB.collection("usuario");
 
@@ -405,17 +439,17 @@ export const PrestamoLibro = async (req, res) => {
       cc: numero,
     });
     if (!permite)
-      return res.status(500).send({
+      return res.status(200).send({
         status: 500,
         message: `El usuario no existe debe registrarse primero para poder prestar un libro`,
       });
     if (permite.deuda >= 100)
-      return res.status(500).send({
+      return res.status(200).send({
         status: 500,
         message: `El usuario posee una deuda de ${permite.deuda}`,
       });
     if (permite.prestamos.length > 2)
-      return res.status(500).send({
+      return res.status(200).send({
         status: 500,
         message: "El usuario ya tiene 3 libros en prestamo",
       });
@@ -441,7 +475,7 @@ export const PrestamoLibro = async (req, res) => {
     const entrega = new Date().toISOString();
     const devolucion = new Date(req.body.devolucion).toISOString();
     if (devolucion < entrega)
-      return res.status(500).send({
+      return res.status(200).send({
         status: 500,
         message: "la fecha de devolucion debe ser mayor a la de entrega",
       });
@@ -457,7 +491,7 @@ export const PrestamoLibro = async (req, res) => {
       $and: [{ cc: numero }, { "prestamos.titulo": req.body.titulo }],
     });
     if (yaposee)
-      return res.status(500).send({
+      return res.status(200).send({
         status: 500,
         message: "el usuario ya tiene este libro en prestamo",
       });
@@ -468,7 +502,7 @@ export const PrestamoLibro = async (req, res) => {
     });
     if (!sepuederestar)
       return res
-        .status(500)
+        .status(200)
         .send({ status: 500, message: "no hay disponivilidad del libro" });
 
     await usuario.updateOne(
@@ -657,20 +691,20 @@ export const acutalizarlibro = async (req, res) => {
   try {
     const error = validationResult(req);
     if (!error.isEmpty())
-      return res.status(500).json({ status: 500, message: error.errors[0] });
+      return res.status(200).json({ status: 500, message: error.errors[0] });
 
     let esxite = await libro.findOne({
-      titulo: req.body.titulo,
+      _id: new ObjectId(req.body._id),
     });
     if (!esxite) {
       return res
-        .status(500)
+        .status(200)
         .send({ status: 500, message: "El libro no existe" });
     }
 
-    await libro.updateOne(
+    const newdata = await libro.updateOne(
       {
-        titulo: req.body.titulo,
+        _id: new ObjectId(req.body._id),
       },
       {
         $set: {
@@ -689,9 +723,11 @@ export const acutalizarlibro = async (req, res) => {
         },
       }
     );
-    res
-      .status(200)
-      .send({ status: 200, message: "Libro actualizado correctamente" });
+    res.status(200).send({
+      status: 200,
+      message: "Libro actualizado correctamente",
+      newdata,
+    });
   } catch (error) {
     res.status(500).send({ status: 200, message: error });
   }

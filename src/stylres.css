@@ -743,7 +743,7 @@ body {
 .Botones-formulario {
   display: flex;
   justify-content: center;
-  
+
 }
 
 
@@ -772,4 +772,14 @@ body {
     height: 200px;
     gap: 30px;
   }
+}
+
+.contenedor-resultado-tablaAdmin {
+  align-items: center;
+  width: 700px;
+  height: 600px;
+}
+
+.tabla-contenidoadmin{
+  width: 100%;
 }

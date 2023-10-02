@@ -66,3 +66,13 @@ export const PerfilUsuario = async (req, res) => {
     return res.status(200).send({ status: 200, data });
   } catch (error) {}
 };
+
+export const existentes = async (req, res) => {
+  try {
+    let data = await usuario.distinct("cc");
+
+    return res.status(200).send(data);
+  } catch (error) {
+    return res.satatus(200).send({ status: 400, error });
+  }
+};

@@ -97,7 +97,6 @@ export const BookAdmin = () => {
       }
     }
     copiarValoresVacios(info, NuevaData);
-    console.log(NuevaData);
 
     try {
       const response = await axios.put(

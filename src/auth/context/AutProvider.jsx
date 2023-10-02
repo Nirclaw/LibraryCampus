@@ -26,7 +26,7 @@ export const AutProvider = ({ children }) => {
       type: types.login,
       payload: usuario,
     };
-    localStorage.setItem("user", JSON.stringify(usuario.user));
+    localStorage.setItem("user", JSON.stringify(usuario));
     dispatch(action);
   };
 

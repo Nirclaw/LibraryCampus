@@ -34,13 +34,12 @@ export const actualizar = async (req, res) => {
       },
       {
         $set: {
-          cc: req.body.cc,
           nombre_completo: req.body.nombre_completo,
           edad: req.body.edad,
           sexo: req.body.sexo,
           contrasena: req.body.contrasena,
           deuda: copia.deuda,
-          rol: "user",
+          rol: req.body.rol,
           permisos: {
             "/usuario": ["1.0.0"],
             "/libro": ["1.0.0"],

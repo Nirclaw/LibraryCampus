@@ -5,9 +5,8 @@ import { Link } from "react-router-dom";
 
 export const TablaUsuarioAdmin = ({ data }) => {
   const { user } = useContext(Autchontext);
-  const [dataPerfil, setdataPerfil] = useState(null); // Inicializa como null
+  const [dataPerfil, setdataPerfil] = useState(null); 
   const [isLoading, setIsLoading] = useState(true);
-  console.log(data);
   const headers = {
     headers: {
       "Accept-version": "1.0.0",
@@ -48,6 +47,7 @@ export const TablaUsuarioAdmin = ({ data }) => {
 
   // Verifica si `libros` contiene datos antes de intentar acceder a propiedades
   const libros = dataPerfil?.prestamos ?? [];
+
   return (
     <div className="contendeor-tablaAdmin">
       <div className="tabla-infousuarioAdmin">
@@ -70,11 +70,16 @@ export const TablaUsuarioAdmin = ({ data }) => {
               <td>{data.nombre_completo}</td>
               <td>{data.sexo}</td>
               <td>{data.deuda}</td>
-              <td>{data.rol}</td>
               <td>{data.contrasena}</td>
+              <td>{data.rol}</td>
 
               <td>
-                <button className="btn btn-outline-primary">editar</button>
+                <Link
+                  className="btn btn-outline-primary"
+                  to={`admin/usuario/${data.cc}`}
+                >
+                  editar
+                </Link>
               </td>
             </tr>
           </tbody>
@@ -89,7 +94,6 @@ export const TablaUsuarioAdmin = ({ data }) => {
               <th scope="col">Fecha de prestamo</th>
               <th scope="col">Fecha de devolucion</th>
               <th scope="col"></th>
-              
             </tr>
           </thead>
           <tbody className="table-group-divider">
@@ -98,7 +102,7 @@ export const TablaUsuarioAdmin = ({ data }) => {
                 <td>
                   <Link
                     className="link-success link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
-                    to={`/libro/${libro.titulo}`} // Reemplaza con la URL correcta
+                    to={`/libro/${libro.titulo}`}
                   >
                     {libro.titulo}
                   </Link>
@@ -106,9 +110,8 @@ export const TablaUsuarioAdmin = ({ data }) => {
                 <td>{new Date(libro.entrega).toLocaleDateString()}</td>
                 <td>{new Date(libro.devolucion).toLocaleDateString()}</td>
                 <td>
-                <button className="btn btn-outline-primary">
-            Recibir</button>
-              </td>
+                  <button className="btn btn-outline-primary">Recibir</button>
+                </td>
               </tr>
             ))}
           </tbody>

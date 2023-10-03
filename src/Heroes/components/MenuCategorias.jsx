@@ -4,6 +4,8 @@ import axios from "axios";
 import { Autchontext } from "../../auth/context/Autchontext"; // Corregir la importación del contexto
 
 export const MenuCategorias = () => {
+  const url = JSON.parse(import.meta.env.VITE_MY_SERVER)
+
   const { user } = useContext(Autchontext);
   const [tarjetas, setTarjetas] = useState([]);
 
@@ -18,7 +20,7 @@ export const MenuCategorias = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "http://127.10.10.10:5100/libro/generos",
+          `http://${url.host}:${url.port}/libro/generos`,
           headers
         );
         const genero = response.data;

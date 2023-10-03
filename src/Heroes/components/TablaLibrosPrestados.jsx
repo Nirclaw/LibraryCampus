@@ -4,6 +4,8 @@ import { Autchontext } from "../../auth/context/Autchontext";
 import axios from "axios";
 
 export const TablaLibrosPrestados = ({ info }) => {
+  const url = JSON.parse(import.meta.env.VITE_MY_SERVER)
+
   const { user } = useContext(Autchontext);
   const [dataPerfil, setdataPerfil] = useState(null); // Inicializa como null
   const [isLoading, setIsLoading] = useState(true);
@@ -19,7 +21,7 @@ export const TablaLibrosPrestados = ({ info }) => {
     const fetchUserData = async () => {
       try {
         const response = await axios.get(
-          `http://127.10.10.10:5100/usuario/${info.cc}`,
+          `http://${url.host}:${url.port}/usuario/${info.cc}`,
           headers
         );
         const perfilData = await response.data.data;

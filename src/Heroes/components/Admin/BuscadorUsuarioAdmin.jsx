@@ -7,6 +7,8 @@ import { LibroCardAdmin } from './cardsAdmin/LibroCardAdmin';
 import { TablaUsuarioAdmin } from './TablaUsuarioAdmin';
 
 export const BuscadorUsuarioAdmin = () => {
+  const url = JSON.parse(import.meta.env.VITE_MY_SERVER)
+
     const { user } = useContext(Autchontext);
 
   const { buscador, cambioEnLaentrada } = useForm({
@@ -34,7 +36,7 @@ export const BuscadorUsuarioAdmin = () => {
       };
 
       const data = await axios.get(
-        `http://127.10.10.10:5100/usuario/${buscador}`,
+        `http://${url.host}:${url.port}/usuario/${buscador}`,
         headers
       );
       if (data.data.data !== null) {
@@ -52,7 +54,7 @@ export const BuscadorUsuarioAdmin = () => {
       },
     };
     const titulosUnicos = await axios.get(
-      `http://127.10.10.10:5100/usuario/existentes`,
+      `http://${url.host}:${url.port}/usuario/existentes`,
       headers
     );
     const data = titulosUnicos.data;

@@ -7,6 +7,8 @@ import { useForm } from "../../auth/hooks/useForms";
 import { validarToken } from "../helpers/desencriptardata";
 
 export const Book = () => {
+  const url = JSON.parse(import.meta.env.VITE_MY_SERVER);
+
   const navigate = useNavigate();
   const { user } = useContext(Autchontext);
   const { titulo } = useParams();
@@ -33,7 +35,7 @@ export const Book = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://127.10.10.10:5100/libro/${titulo}`,
+          `http://${url.host}:${url.port}/libro/${titulo}`,
           headers
         );
         const result = response.data.data;
@@ -56,7 +58,7 @@ export const Book = () => {
   const handlePrestarClick = async () => {
     try {
       const respuesta = await axios.post(
-        `http://127.10.10.10:5100/libro/prestamoLibro`,
+        `http://${url.host}:${url.port}/libro/prestamoLibro`,
         {
           cc: usarioInfo[0].cc,
           devolucion: fecha,
@@ -125,21 +127,28 @@ export const Book = () => {
           <h3 className="contendor-sinopsis">
             <p className="contendor-textosinpsis">{info.sinopsis}</p>
           </h3>
-         
+
           <div className="contenedor-botones">
-            <label className="contendor-mensaje" >Elija la fecha de devolucion: </label>
+            <label className="contendor-mensaje">
+              Elija la fecha de devolucion:{" "}
+            </label>
             <input
-            className="btn"
-            type="date"
-            name="fecha"
-            id="fecha"
-            value={fecha}
-            onChange={cambioEnLaentrada}
-            style={{"gridColumn":"1/3"}}/>
-            <button className="btn" onClick={OnNavigateBack} style={{"gridColumn":"1"}}>
+              className="btn"
+              type="date"
+              name="fecha"
+              id="fecha"
+              value={fecha}
+              onChange={cambioEnLaentrada}
+              style={{ gridColumn: "1/3" }}
+            />
+            <button
+              className="btn"
+              onClick={OnNavigateBack}
+              style={{ gridColumn: "1" }}
+            >
               Regresar
             </button>
-           
+
             <button className="btn " onClick={handlePrestarClick}>
               Prestar
             </button>
@@ -152,7 +161,6 @@ export const Book = () => {
           </div>
         </div>
       </div>
-      
     </>
   );
 };

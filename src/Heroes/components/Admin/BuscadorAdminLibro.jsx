@@ -7,6 +7,8 @@ import { LibroCardAdmin } from "./cardsAdmin/LibroCardAdmin";
 import { Navigate } from "react-router-dom";
 
 export const BuscadorAdminLibro = () => {
+  const url = JSON.parse(import.meta.env.VITE_MY_SERVER)
+
   const { user } = useContext(Autchontext);
 
   const { buscador, cambioEnLaentrada } = useForm({
@@ -34,7 +36,7 @@ export const BuscadorAdminLibro = () => {
       };
 
       const data = await axios.get(
-        `http://127.10.10.10:5100/libro/${buscador}`,
+        `http://${url.host}:${url.post}/libro/${buscador}`,
         headers
       );
       if (data.data.data !== null) {

@@ -7,6 +7,8 @@ import SuccessNotification from "../SuccessNotification";
 import { Autchontext } from "../../../auth/context/Autchontext";
 
 export const BookAdmin = () => {
+  const url = JSON.parse(import.meta.env.VITE_MY_SERVER)
+
   const navigate = useNavigate();
   const { user } = useContext(Autchontext);
   const { titulo } = useParams();
@@ -68,7 +70,7 @@ export const BookAdmin = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://127.10.10.10:5100/libro/${titulo}`,
+          `http://${url.host}:${url.port}/libro/${titulo}`,
           headers
         );
         const result = response.data.data;
@@ -100,7 +102,7 @@ export const BookAdmin = () => {
 
     try {
       const response = await axios.put(
-        `http://127.10.10.10:5100/libro/actualizar`,
+        `http://${url.host}/libro/actualizar`,
         NuevaData,
         headers
       );

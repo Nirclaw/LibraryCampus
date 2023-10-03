@@ -6,6 +6,8 @@ import { Autchontext } from "../../auth/context/Autchontext";
 import { OptionAutocomplete } from "../components/OptionAutocomplete";
 
 export const SearchBook = () => {
+  const url = JSON.parse(import.meta.env.VITE_MY_SERVER)
+
   const { user } = useContext(Autchontext);
 
   const { buscador, cambioEnLaentrada } = useForm({
@@ -33,7 +35,7 @@ export const SearchBook = () => {
       };
 
       const data = await axios.get(
-        `http://127.10.10.10:5100/libro/${buscador}`,
+        `http://${url.host}:${url.port}/libro/${buscador}`,
         headers
       );
       if (data.data.data !== null) {
@@ -51,7 +53,7 @@ export const SearchBook = () => {
       },
     };
     const titulosUnicos = await axios.get(
-      `http://127.10.10.10:5100/libro/todainfo`,
+      `http://${url.host}:${url.port}/libro/todainfo`,
       headers
     );
     const data = titulosUnicos.data;

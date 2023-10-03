@@ -5,6 +5,8 @@ import axios from "axios";
 import { Autchontext } from "../../../../auth/context/Autchontext";
 
 export const FormularioNuevoLibro = () => {
+  const url = JSON.parse(import.meta.env.VITE_MY_SERVER)
+
   const navigate = useNavigate();
   const [Enviar, setEnviar] = useState(null);
   const [Error, setError] = useState(null);
@@ -65,7 +67,7 @@ export const FormularioNuevoLibro = () => {
     };
     try {
       const response = await axios.post(
-        `http://127.10.10.10:5100/libro/registrar`,
+        `http://${url.host}:${url.post}/libro/registrar`,
         NuevaData,
         headers
       );

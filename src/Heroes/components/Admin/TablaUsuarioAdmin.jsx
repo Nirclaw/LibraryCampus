@@ -4,9 +4,14 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 
 export const TablaUsuarioAdmin = ({ data }) => {
+  const url = JSON.parse(import.meta.env.VITE_MY_SERVER);
+
   const { user } = useContext(Autchontext);
-  const [dataPerfil, setdataPerfil] = useState(null); 
+  const [desactivarBotones, setDesactivarBotones] = useState({});
+  const [Mensaje, setMensaje] = useState("");
+  const [dataPerfil, setdataPerfil] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [Error, setError] = useState(false);
   const headers = {
     headers: {
       "Accept-version": "1.0.0",
@@ -18,7 +23,7 @@ export const TablaUsuarioAdmin = ({ data }) => {
     const fetchUserData = async () => {
       try {
         const response = await axios.get(
-          `http://127.10.10.10:5100/usuario/${data.cc}`,
+          `http://${url.host}:${url.port}/usuario/${data.cc}`,
           headers
         );
         const perfilData = await response.data.data;
@@ -44,7 +49,24 @@ export const TablaUsuarioAdmin = ({ data }) => {
     );
     // Muestra un mensaje de carga mientras se obtienen los datos
   }
+  const OnRecibir = async (eve) => {
+    const titulo = eve.target.id;
+    const body = { titulo: titulo, cc: dataPerfil.cc };
+    setDesactivarBotones((prevDesactivarBotones) => ({
+      ...prevDesactivarBotones,
+      [titulo]: true,
+    }));
 
+    const respuesta = await axios.post(
+      `http://${url.host}:${url.port}/libro/devolucion`,
+      body,
+      headers
+    );
+    if (respuesta.status === 200) {
+      setError(true);
+      setMensaje(respuesta.data.message);
+    }
+  };
   // Verifica si `libros` contiene datos antes de intentar acceder a propiedades
   const libros = dataPerfil?.prestamos ?? [];
 
@@ -76,7 +98,7 @@ export const TablaUsuarioAdmin = ({ data }) => {
               <td>
                 <Link
                   className="btn btn-outline-primary"
-                  to={`admin/usuario/${data.cc}`}
+                  to={`/admin/usuario/${data.cc}`}
                 >
                   editar
                 </Link>
@@ -110,13 +132,27 @@ export const TablaUsuarioAdmin = ({ data }) => {
                 <td>{new Date(libro.entrega).toLocaleDateString()}</td>
                 <td>{new Date(libro.devolucion).toLocaleDateString()}</td>
                 <td>
-                  <button className="btn btn-outline-primary">Recibir</button>
+                  <button
+                    className="btn btn-outline-primary"
+                    onClick={OnRecibir}
+                    id={libro.titulo}
+                    disabled={desactivarBotones[libro.titulo]}
+                  >
+                    Recibir
+                  </button>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
+      {Error === true ? (
+        <div className="alert alert-success" role="alert">
+          {Mensaje}
+        </div>
+      ) : (
+        <></>
+      )}
     </div>
   );
 };

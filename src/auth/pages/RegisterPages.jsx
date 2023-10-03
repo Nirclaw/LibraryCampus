@@ -5,6 +5,8 @@ import { useForm } from "../hooks/useForms";
 import axios from "axios";
 
 export const RegisterPages = () => {
+  const url = JSON.parse(import.meta.env.VITE_MY_SERVER);
+
   const { login } = useContext(Autchontext);
   const navegate = useNavigate();
 
@@ -26,13 +28,16 @@ export const RegisterPages = () => {
 
   const OnRegister = async (eve) => {
     eve.preventDefault();
-    const { data } = await axios.post("http://127.10.10.10:5100/register", {
-      cc: parseInt(cedula),
-      nombre_completo,
-      edad: parseInt(edad),
-      sexo,
-      contrasena,
-    });
+    const { data } = await axios.post(
+      `http://${url.host}:${ulr.port}/register`,
+      {
+        cc: parseInt(cedula),
+        nombre_completo,
+        edad: parseInt(edad),
+        sexo,
+        contrasena,
+      }
+    );
     if (data.status === 200) {
       navegate("/login", {
         replace: false,

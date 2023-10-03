@@ -6,7 +6,7 @@ import { LibroCards } from "./LibroCards.jsx";
 export const BooksList = () => {
   const { user } = useContext(Autchontext);
   const [tarjetas, setTarjetas] = useState([]);
-
+  const url = JSON.parse(import.meta.env.VITE_MY_SERVER)
   const headers = {
     headers: {
       "Accept-version": "1.0.0",
@@ -18,7 +18,7 @@ export const BooksList = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "http://127.10.10.10:5100/libro",
+          `http://${url.host}:${url.port}/libro`,
           headers
         );
         const result = response.data.data;

@@ -5,6 +5,8 @@ import { useForm } from "../hooks/useForms";
 import axios from "axios";
 
 export const LoginPages = () => {
+  const url = JSON.parse(import.meta.env.VITE_MY_SERVER)
+
   const { login } = useContext(Autchontext);
 
   const navegate = useNavigate();
@@ -17,7 +19,7 @@ export const LoginPages = () => {
   const Onlogin = async (eve) => {
     eve.preventDefault();
 
-    const { data } = await axios.post("http://127.10.10.10:5100/login", {
+    const { data } = await axios.post(`http://${url.host}:${url.port}/login`, {
       cc: parseInt(logcedula),
       contrasena: logpass,
     });

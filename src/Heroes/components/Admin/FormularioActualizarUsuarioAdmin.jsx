@@ -2,11 +2,18 @@ import React, { useContext, useEffect, useState } from "react";
 import { useForm } from "../../../auth/hooks/useForms";
 import { Autchontext } from "../../../auth/context/Autchontext";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import {  useNavigate, useParams } from "react-router-dom";
 
 export const FormularioActualizarUsuarioAdmin = () => {
-  const { cc } = useParams();
+  const navigate = useNavigate();
 
+  const { cc } = useParams();
+  const url = JSON.parse(import.meta.env.VITE_MY_SERVER);
+  const { user } = useContext(Autchontext);
+  const [dataPerfil, setdataPerfil] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [Enviar, setEnviar] = useState(null);
+  const [Error, setError] = useState(false);
   const {
     NuevoNombre,
     NuevoEdad,
@@ -22,9 +29,14 @@ export const FormularioActualizarUsuarioAdmin = () => {
     NuevoContrasena: "",
   });
 
-  const { user } = useContext(Autchontext);
-  const [dataPerfil, setdataPerfil] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
+  let NuevaData = {
+    cc: "",
+    nombre_completo: NuevoNombre,
+    edad: NuevoEdad,
+    sexo: NuevoSexo,
+    rol: NuevoRol,
+    contrasena: NuevoContrasena,
+  };
   const headers = {
     headers: {
       "Accept-version": "1.0.0",
@@ -36,7 +48,7 @@ export const FormularioActualizarUsuarioAdmin = () => {
     const fetchUserData = async () => {
       try {
         const response = await axios.get(
-          `http://127.10.10.10:5100/usuario/${cc}`,
+          `http://${url.host}:${url.port}/usuario/${cc}`,
           headers
         );
         const perfilData = await response.data.data;
@@ -62,11 +74,38 @@ export const FormularioActualizarUsuarioAdmin = () => {
     );
   }
 
-  const OnGuardar = () => {
-    console.log(dataPerfil);
-  };
+  const OnGuardar = async () => {
+    function copiarValoresVacios(origen, destino) {
+      for (const key in origen) {
+        if (origen.hasOwnProperty(key) && destino[key] === "") {
+          destino[key] = origen[key];
+        }
+      }
+    }
+    copiarValoresVacios(dataPerfil, NuevaData);
 
-  const Oncancelar = () => {};
+    try {
+      const response = await axios.put(
+        `http://${url.host}:${url.port}/usuario/actualizar`,
+        NuevaData,
+        headers
+      );
+      const result = response.data;
+
+      if (result.status === 200) {
+        setEnviar(result.message);
+        setError(true);
+      } else {
+        setEnviar(result.message.msg);
+        setError(true);
+      }
+    } catch (error) {
+      console.error("Error al obtener datos:", error);
+    }
+  };
+  const Oncancelar = () => {
+    navigate(-1)
+  };
   return (
     <div className="Formulario-Crear-libro">
       <input
@@ -79,7 +118,7 @@ export const FormularioActualizarUsuarioAdmin = () => {
       />
       <input
         className="form-control form-control-lg"
-        type="text"
+        type="number"
         name="NuevoEdad"
         value={NuevoEdad}
         onChange={cambioEnLaentrada}
@@ -123,8 +162,24 @@ export const FormularioActualizarUsuarioAdmin = () => {
           Guardar
         </button>
         <button className="btn" onClick={Oncancelar}>
-          Cancelar
+          Volver
         </button>
+      </div>
+      <div>
+        {Error === true ? (
+          <div
+            className={
+              Enviar.status === 200
+                ? "alert alert-success"
+                : "alert alert-danger"
+            }
+            role="alert"
+          >
+            {Enviar}
+          </div>
+        ) : (
+          <></>
+        )}
       </div>
     </div>
   );

@@ -25,7 +25,7 @@ export const LoginPages = () => {
     });
     if (data.status === 200) {
       login(data.message);
-      navegate("/marvel", {
+      navegate("/biblioteca", {
         replace: true,
       });
     }else {

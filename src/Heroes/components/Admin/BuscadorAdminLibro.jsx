@@ -36,7 +36,7 @@ export const BuscadorAdminLibro = () => {
       };
 
       const data = await axios.get(
-        `http://${url.host}:${url.post}/libro/${buscador}`,
+        `http://${url.host}:${url.port}/libro/${buscador}`,
         headers
       );
       if (data.data.data !== null) {
@@ -54,7 +54,7 @@ export const BuscadorAdminLibro = () => {
       },
     };
     const titulosUnicos = await axios.get(
-      `http://127.10.10.10:5100/libro/todainfo`,
+      `http://${url.host}:${url.port}/libro/todainfo`,
       headers
     );
     const data = titulosUnicos.data;

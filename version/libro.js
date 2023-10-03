@@ -729,6 +729,6 @@ export const acutalizarlibro = async (req, res) => {
       newdata,
     });
   } catch (error) {
-    res.status(500).send({ status: 200, message: error });
+    res.status(200).send({ status: 200, message: error });
   }
 };

@@ -10,6 +10,7 @@ export const BookAdmin = () => {
   const url = JSON.parse(import.meta.env.VITE_MY_SERVER)
 
   const navigate = useNavigate();
+  const [Error, setError] = useState(null);
   const { user } = useContext(Autchontext);
   const { titulo } = useParams();
   const [info, setinfo] = useState({});
@@ -29,6 +30,7 @@ export const BookAdmin = () => {
     NuevoSinpsis,
     NuevoLink,
     cambioEnLaentrada,
+    borrar
   } = useForm({
     Nuevotitulo: "",
     NuenoAutor: "",
@@ -49,8 +51,8 @@ export const BookAdmin = () => {
     fecha_publicacion: NuevoFecha,
     genero: NuevoGenero,
     idioma: NuevoIdioma,
-    paginas: NuevoPaginas,
-    precio: NuevoPrecio,
+    paginas: parseInt(NuevoPaginas),
+    precio: Number(NuevoPrecio),
     sinopsis: NuevoSinpsis,
     portada: NuevoLink,
     cantidad: 0,
@@ -61,7 +63,6 @@ export const BookAdmin = () => {
       Authorization: `Bearer ${user.user}`,
     },
   };
-
   const closeSuccessNotification = () => {
     setShowSuccessNotification(false);
   };
@@ -99,19 +100,26 @@ export const BookAdmin = () => {
       }
     }
     copiarValoresVacios(info, NuevaData);
-
     try {
-      const response = await axios.put(
-        `http://${url.host}/libro/actualizar`,
+      const result = await axios.put(
+        `http://${url.host}:${url.port}/libro/actualizar`,
         NuevaData,
         headers
       );
-      const result = response;
-      setEnviar(result);
+      if (result.data.status === 200) {
+        console.log(result.data.message.errInfo ? alert("Error en los datos escritos ") : alert(result.data.message));
+
+      }
+      ///alert(result.data.message.msg);
+      // if (result.data.status === 200) {
+      //   setEnviar(result)
+      // } else {
+      //   (result.data.message.msg ? alert(result.data.message.msg) : alert(result.data.message.errInfo.details.schemaRulesNotSatisfied[0].propertiesNotSatisfied[0].description))
+      // }
+
     } catch (error) {
-      console.error("Error al obtener datos:", error);
+      alert("Error en los datos porporciados");
     }
-    navigate(-1);
   };
 
   const OnNavigateBack = () => {
@@ -170,6 +178,7 @@ export const BookAdmin = () => {
                 name="NuevoFecha"
                 value={NuevoFecha}
                 onChange={cambioEnLaentrada}
+                type="date"
               />
             </li>
 
@@ -199,6 +208,7 @@ export const BookAdmin = () => {
                 name="NuevoPaginas"
                 onChange={cambioEnLaentrada}
                 value={NuevoPaginas}
+                type="number"
               />
             </li>
             <li>
@@ -254,6 +264,8 @@ export const BookAdmin = () => {
               />
             )}
           </div>
+          <>{Error}</>
+
         </div>
       </div>
     </>

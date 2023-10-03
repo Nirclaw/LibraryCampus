@@ -12,10 +12,8 @@ export const NavbarBook = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        // Obtener información del usuario
         const userInfo = await validarToken(user.user);
-        setUsarioInfo(userInfo[0].rol);
-        // Obtener datos del perfil del usuario
+        setUsarioInfo(userInfo.rol);
       } catch (error) {
         console.error("Error al obtener datos:", error);
       }

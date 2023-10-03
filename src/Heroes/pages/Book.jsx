@@ -55,21 +55,23 @@ export const Book = () => {
     obtenerUsarioInfo();
   }, [titulo, user.user]);
 
-  const handlePrestarClick = async () => {
+  const Onprestar = async () => {
     try {
-      const respuesta = await axios.post(
+      const data = await axios.post(
         `http://${url.host}:${url.port}/libro/prestamoLibro`,
         {
-          cc: usarioInfo[0].cc,
+          cc: usarioInfo.cc,
           devolucion: fecha,
           titulo: titulo,
         },
         headers
       );
-      setRespuesta(respuesta);
+      setRespuesta(data);
       setShowSuccessNotification(true);
       return respuesta;
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const OnNavigateBack = () => {
@@ -149,7 +151,7 @@ export const Book = () => {
               Regresar
             </button>
 
-            <button className="btn " onClick={handlePrestarClick}>
+            <button className="btn " onClick={Onprestar}>
               Prestar
             </button>
             {showSuccessNotification && (

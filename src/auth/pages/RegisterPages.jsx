@@ -5,10 +5,10 @@ import { useForm } from "../hooks/useForms";
 import axios from "axios";
 
 export const RegisterPages = () => {
-  const url = JSON.parse(import.meta.env.VITE_MY_SERVER);
 
   const { login } = useContext(Autchontext);
   const navegate = useNavigate();
+  const url = JSON.parse(import.meta.env.VITE_MY_SERVER);
 
   const { cedula, nombre_completo, edad, sexo, contrasena, cambioEnLaentrada } =
     useForm({
@@ -19,7 +19,6 @@ export const RegisterPages = () => {
       contrasena: "",
     });
 
-  console.log({ cedula, nombre_completo, edad, sexo, contrasena });
   const Onlogin = () => {
     navegate("/login", {
       replace: true,
@@ -29,7 +28,7 @@ export const RegisterPages = () => {
   const OnRegister = async (eve) => {
     eve.preventDefault();
     const { data } = await axios.post(
-      `http://${url.host}:${ulr.port}/register`,
+      `http://${url.host}:${url.port}/register`,
       {
         cc: parseInt(cedula),
         nombre_completo,
@@ -43,7 +42,7 @@ export const RegisterPages = () => {
         replace: false,
       });
     } else {
-      return alert("Intentelo de nuevo");
+      return alert(data.message);
     }
   };
 

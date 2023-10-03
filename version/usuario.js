@@ -63,7 +63,7 @@ export const PerfilUsuario = async (req, res) => {
       cc: parseInt(req.params.cc),
     });
     return res.status(200).send({ status: 200, data });
-  } catch (error) {}
+  } catch (error) { }
 };
 
 export const existentes = async (req, res) => {
@@ -75,3 +75,4 @@ export const existentes = async (req, res) => {
     return res.satatus(200).send({ status: 400, error });
   }
 };
+

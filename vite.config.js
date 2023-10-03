@@ -4,11 +4,8 @@ import react from "@vitejs/plugin-react-swc";
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
-  define: {
-    // Agrega tu variable de entorno aquí
-    "process.env.MY_VARIABLE": JSON.stringify(process.env.MY_VARIABLE || ""),
-  },server: {
-    host: "127.168.129.72",
+server: {
+    host: "192.168.129.72",
     port: 5182
   }
 });

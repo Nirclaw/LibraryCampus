@@ -1,12 +1,17 @@
+import axios from "axios";
 import { jwtVerify } from "jose";
-
-export const validarToken = async (Token) => {
+export const validarToken = async (user) => {
   try {
-    const encode = new TextEncoder();
-    const jwtData = await jwtVerify(Token, encode.encode(import.meta.env.VITE_MY_KEYS));
-    const respuesta = await jwtData.payload.id;
-    return respuesta;
+    const headers = {
+      headers: {
+        "Accept-version": "1.0.0",
+        Authorization: `Bearer ${user}`,
+      },
+    };
+    const data = await axios.get("http://192.168.129.72:5181/usuario/token", headers)
+    const devolver = data.data.data.payload.id[0]
+    return devolver;
   } catch (error) {
-    return false;
+    return console.log(error);;
   }
 };

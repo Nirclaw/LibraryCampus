@@ -18,9 +18,9 @@ export const Perfil = () => {
       try {
         // Obtener información del usuario
         const userInfo = await validarToken(user.user);
-        setUsarioInfo(userInfo[0]);
-        setnombre(userInfo[0].nombre_completo);
-        seinciar(userInfo[0].nombre_completo)
+        setUsarioInfo(userInfo);
+        setnombre(userInfo.nombre_completo);
+        seinciar(userInfo.nombre_completo)
         // Obtener datos del perfil del usuario
       } catch (error) {
         console.error("Error al obtener datos:", error);

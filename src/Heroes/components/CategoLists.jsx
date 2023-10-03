@@ -5,6 +5,8 @@ import { useParams } from "react-router-dom";
 import { LibroCards } from "./LibroCards";
 
 export const CategoLists = () => {
+  const url = JSON.parse(import.meta.env.VITE_MY_SERVER)
+
   const { user } = useContext(Autchontext);
   const { genero } = useParams();
   const [tarjetas, setTarjetas] = useState([]);
@@ -20,7 +22,7 @@ export const CategoLists = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://127.10.10.10:5100/libro/categoria/${genero}`,
+          `http://${url.host}:${url.port}/libro/categoria/${genero}`,
           headers
         );
         const result = response.data;

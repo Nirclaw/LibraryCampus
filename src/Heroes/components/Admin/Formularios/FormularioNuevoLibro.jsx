@@ -67,12 +67,11 @@ export const FormularioNuevoLibro = () => {
     };
     try {
       const response = await axios.post(
-        `http://${url.host}:${url.post}/libro/registrar`,
+        `http://${url.host}:${url.port}/libro/registrar`,
         NuevaData,
         headers
       );
       const result = response;
-      console.log(result);
       if (result.data.status === 200) {
         borrar();
         return setError(

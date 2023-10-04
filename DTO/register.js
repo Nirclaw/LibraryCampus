@@ -1,12 +1,6 @@
 import { check } from "express-validator";
 
 export const Registrar = [
-  check("cc")
-    .notEmpty()
-    .withMessage("La cedula debe ser obligatoria")
-    .isNumeric()
-    .withMessage("el tipo de dato debe ser numerico"),
-
   check("nombre_completo")
     .notEmpty()
     .withMessage("El nombre_completo debe ser obligatorio")
@@ -29,6 +23,11 @@ export const Registrar = [
   check("contrasena")
     .notEmpty()
     .withMessage("La contrasena debe ser obligatorio")
+    .isString()
+    .withMessage("el tipo de dato debe ser texto"),
+    check("rol")
+    .notEmpty()
+    .withMessage("el rol debe ser obligatorio")
     .isString()
     .withMessage("el tipo de dato debe ser texto"),
 ];

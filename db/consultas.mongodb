@@ -179,6 +179,8 @@ db.libro.distinct("genero");
 //todos los titulos
 use("libraryCampus");
 db.libro.distinct("titulo");
+use("libraryCampus");
+db.usuario.distinct("cc");
 ///Encontrar los libros que han sido prestados por un usuario específico.
 use("libraryCampus");
 db.usuario.aggregate([

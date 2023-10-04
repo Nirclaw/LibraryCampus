@@ -33,10 +33,12 @@ export const CrearToken = async (req, res) => {
   res.send({ status: 200, message: llave });
 };
 
+
 export const validarToken = async (req, Token) => {
   try {
     const encode = new TextEncoder();
     const jwtData = await jwtVerify(Token, encode.encode(MY_KEY));
+    req.data = jwtData
 
     let busqueda = await DB.collection("usuario").findOne({
       _id: new ObjectId(jwtData.payload.id[0]._id),
@@ -49,3 +51,8 @@ export const validarToken = async (req, Token) => {
     return false;
   }
 };
+
+export const token =  (req, res) => {
+
+  res.send({ data: req.data })
+}

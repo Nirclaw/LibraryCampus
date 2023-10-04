@@ -538,7 +538,7 @@ export const devolucion = async (req, res) => {
   try {
     const error = validationResult(req);
     if (!error.isEmpty())
-      return res.status(500).json({ status: 500, message: error.errors[0] });
+      return res.status(200).json({ status: 500, message: error.errors[0] });
 
     let usuario = await DB.collection("usuario");
     let number = parseInt(req.body.cc);
@@ -547,7 +547,7 @@ export const devolucion = async (req, res) => {
       cc: number,
     });
     if (!permite)
-      return res.status(500).send({
+      return res.status(200).send({
         status: 500,
         message: `El usuario no existe debe registrarse primero para poder prestar un libro`,
       });
@@ -646,7 +646,7 @@ export const registrarLibro = async (req, res) => {
   try {
     const error = validationResult(req);
     if (!error.isEmpty())
-      return res.status(500).json({ status: 500, message: error.errors[0] });
+      return res.status(200).json({ status: 500, message: error.errors[0] });
 
     let esxite = await libro.findOne({
       titulo: req.body.titulo,
@@ -683,7 +683,7 @@ export const registrarLibro = async (req, res) => {
       .status(200)
       .send({ status: 200, message: "Libro ingreado correctamente" });
   } catch (error) {
-    res.status(500).send({ status: 200, message: error });
+    res.status(200).send({ status: 500, message: error });
   }
 };
 
@@ -729,6 +729,6 @@ export const acutalizarlibro = async (req, res) => {
       newdata,
     });
   } catch (error) {
-    res.status(500).send({ status: 200, message: error });
+    res.status(200).send({ status: 200, message: error });
   }
 };

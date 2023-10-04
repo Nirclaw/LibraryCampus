@@ -34,13 +34,12 @@ export const actualizar = async (req, res) => {
       },
       {
         $set: {
-          cc: req.body.cc,
           nombre_completo: req.body.nombre_completo,
           edad: req.body.edad,
           sexo: req.body.sexo,
           contrasena: req.body.contrasena,
           deuda: copia.deuda,
-          rol: "user",
+          rol: req.body.rol,
           permisos: {
             "/usuario": ["1.0.0"],
             "/libro": ["1.0.0"],
@@ -64,5 +63,16 @@ export const PerfilUsuario = async (req, res) => {
       cc: parseInt(req.params.cc),
     });
     return res.status(200).send({ status: 200, data });
-  } catch (error) {}
+  } catch (error) { }
 };
+
+export const existentes = async (req, res) => {
+  try {
+    let data = await usuario.distinct("cc");
+
+    return res.status(200).send(data);
+  } catch (error) {
+    return res.satatus(200).send({ status: 400, error });
+  }
+};
+

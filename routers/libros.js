@@ -38,6 +38,8 @@ import {
 export const appLibros = Router();
 
 appLibros.use(limite(), passport.authenticate("bearer", { session: false }));
+
+
 appLibros.get(
   "/todainfo",
   VERSION({

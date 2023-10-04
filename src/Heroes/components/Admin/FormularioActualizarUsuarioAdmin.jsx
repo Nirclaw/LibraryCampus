@@ -132,7 +132,7 @@ export const FormularioActualizarUsuarioAdmin = () => {
         value={NuevoSexo}
         onChange={cambioEnLaentrada}
       >
-        <option value="Homber">Homber</option>
+        <option value="Hombre">Hombre</option>
         <option value="Mujer">Mujer</option>
         <option value="LGBTQI">LGBTQI+</option>
       </select>

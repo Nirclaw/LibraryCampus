@@ -15,7 +15,6 @@ export const PrivateRouterAdmin = ({ children }) => {
       try {
         // Obtener información del usuario
         const userInfo = await validarToken(user.user);
-        console.log(userInfo);
         setUsarioInfo(userInfo);
         // Obtener datos del perfil del usuario
       } catch (error) {

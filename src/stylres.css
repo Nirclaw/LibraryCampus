@@ -116,7 +116,15 @@
   overflow: hidden;
   font-size: 14px;
   border-radius: 6px;
-  background-color: rgba(221, 219, 219, 0.911);
+  background-color: #e5e5e5; /* Color de fondo gris */
+  color: rgb(0, 0, 0); /* Color del texto en la tarjeta */
+    box-shadow: -9px 12px 5px 3px rgb(0 0 0 / 46%); /* Sombra con desplazamiento horizontal 0, desplazamiento vertical 0, difuminado de 10px y color semi-transparente negro */
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+
+}
+.card-int:hover {
+  background-color: #777; /* Color de fondo gris más claro al pasar el cursor */
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.7); /* Sombra más pronunciada al pasar el cursor */
 }
 
 .img-card {
@@ -180,13 +188,18 @@
     background-position: 400% 400%;
   }
 }
+.contenedor-Barrabusqueda{
+  margin-top: 80px;
+
+}
 
 /* Media Query para tamaños de pantalla más pequeños */
 .contenedor-Tarjetas {
   margin-top: 70px;
   justify-content: center;
   display: grid;
-  grid-template-columns: repeat(3, 500px);
+  gap: 20px;
+  grid-template-columns: 400px 400px 300px;
   row-gap: 40px;
   grid-auto-rows: minmax(10px, auto);
   overflow-y: auto;
@@ -447,9 +460,12 @@ img.img-thumbnail {
 
 }
 
-
 body {
-  background-color: #e0dee093;
+  background: url('./img/fondo5.jpg');
+  background-size: cover; /* Ajustar el tamaño del fondo para cubrir todo el viewport */
+  background-repeat: no-repeat; /* Evitar la repetición del fondo */
+  background-attachment: fixed; /* Hacer que el fondo sea fijo mientras se desplaza la página */
+  
 }
 
 
@@ -569,10 +585,11 @@ body {
 
 
 
-
 .input-container {
   position: relative;
+  box-shadow: -20px 13px 5px 5px rgb(0 0 0 / 33%); /* Sombra suave */
 }
+
 
 .input {
   font-size: 1em;

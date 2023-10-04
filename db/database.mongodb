@@ -1,0 +1,142 @@
+use("libraryCampus");
+db.createCollection("usuario", {
+  validator: {
+    $jsonSchema: {
+      bsonType: "object",
+      title: "usuario",
+      required: [
+        "cc",
+        "nombre_completo",
+        "edad",
+        "sexo",
+        "rol",
+        "permisos",
+        "contrasena",
+        "deuda",
+        "reportes",
+        "prestamos",
+        "reservados",
+      ],
+      properties: {
+        cc: {
+          bsonType: "int",
+          description: "el tipo de dato debe ser numerico",
+        },
+        nombre_completo: {
+          bsonType: "string",
+          description: "el tipo de dato debe ser string",
+        },
+        edad: {
+          bsonType: "int",
+          description: "el tipo de dato debe ser  numerico",
+        },
+        sexo: {
+          bsonType: "string",
+          description: "El tipo de dato debe ser string",
+        },
+        rol: {
+          enum: ["admin", "user"],
+          description: "el dato debe ser admin o user",
+        },
+        permisos: {
+          bsonType: "object",
+          description: "ingrese los permisos",
+        },
+        contrasena: {
+          bsonType: "string",
+          description: "el dato debe ser string",
+        },
+        deuda: {
+          bsonType: "int",
+          description: "el dato debe ser numerico",
+        },
+        reportes: {
+          bsonType: "array",
+          description: "el dato deber un objeto",
+        },
+        prestamos: {
+          bsonType: "array",
+          description: "el dato debe ser un objeto",
+        },
+        reservados: {
+          bsonType: "array",
+          description: "el dato debe ser un objeto",
+        },
+      },
+    },
+  },
+});
+
+use("libraryCampus");
+db.createCollection("libro", {
+  validator: {
+    $jsonSchema: {
+      bsonType: "object",
+      title: "libro",
+      required: [
+        "titulo",
+        "autor",
+        "editorial",
+        "fecha_publicacion",
+        "genero",
+        "idioma",
+        "sinopsis",
+        "portada",
+        "paginas",
+        "precio",
+        "estado",
+        "cantidad"
+      ],
+      properties: {
+        titulo: {
+          bsonType: "string",
+          description: "el tipo de dato debe ser string",
+        },
+        autor: {
+          bsonType: "string",
+          description: "el tipo de dato debe ser string",
+        },
+        editorial: {
+          bsonType: "string",
+          description: "el tipo de dato debe ser string",
+        },
+        fecha_publicacion: {
+          bsonType: "string",
+          description: "el tipo de dato debe ser string",
+        },
+        genero: {
+          bsonType: "string",
+          description: "el tipo de dato debe ser string",
+        },
+        idioma: {
+          bsonType: "string",
+          description: "el tipo de dato debe ser string",
+        },
+        sinopsis: {
+          bsonType: "string",
+          description: "el tipo de dato debe ser string",
+        },
+        portada: {
+          bsonType: "string",
+          description: "el tipo de dato debe ser string",
+        },
+        paginas: {
+          bsonType: "int",
+          description: "el tipo de dato debe ser int",
+        },
+        precio: {
+          bsonType: "double",
+          description: "el tipo de dato debe ser double",
+        },
+        estado: {
+          bsonType: "string",
+          description: "el tipo de dato debe ser string",
+        },
+        cantidad:{
+          bsonType: "int",
+          description: "el tipo de dato debe ser int",
+        }
+      },
+    },
+  },
+});

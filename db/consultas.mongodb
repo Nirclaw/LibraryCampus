@@ -1,0 +1,322 @@
+import { ObjectId } from "mongodb";
+
+use("libraryCampus");
+db.usuario.updateOne(
+  {
+    cc: 1,
+  },
+  {
+    $push: {
+      reportes: {
+        id: 2,
+        fecha: "2023-09-20",
+        motivo: "demora",
+        comentario: "no entrega los libros en la fecha estimada",
+      },
+    },
+  }
+);
+use("libraryCampus");
+db.usuario.findOne({ cc: 1 }, { reportes: { $elemMatch: { id: 2 } } });
+
+use("libraryCampus");
+db.usuario.aggregate(
+  {
+    $match: {
+      cc: 1,
+    },
+  },
+  {
+    $project: {
+      _id: 0,
+      reportes: {
+        $filter: {
+          input: "$reportes",
+          as: "reporte",
+          cond: { $eq: ["$$reporte.id", 2] },
+        },
+      },
+    },
+  }
+);
+
+use("libraryCampus");
+db.usuario.aggregate(
+  {
+    $match: {
+      cc: 15433,
+    },
+  },
+  {
+    $project: {
+      _id: 0,
+      reportes: 1,
+    },
+  }
+);
+use("libraryCampus");
+let copia = db.libro.findOne({
+  titulo: "Libro 2",
+});
+let {
+  editorial,
+  fecha_publicacion,
+  genero,
+  idioma,
+  sinopsis,
+  portada,
+  paginas,
+  estado,
+  cantidad,
+  ...nuevaCopia
+} = copia;
+let entrega = new Date("2023-09-15").toLocaleDateString();
+let devolucion = new Date("2023-09-18").toISOString();
+let fechaEntrega = {
+  entrga: entrega,
+  devolucion: devolucion,
+};
+Object.assign(nuevaCopia, fechaEntrega);
+
+db.usuario.updateOne(
+  {
+    cc: 12,
+  },
+  {
+    $push: {
+      prestamos: nuevaCopia,
+    },
+  }
+);
+//Mostrar todos los libros disponibles en la biblioteca.
+use("libraryCampus");
+db.libro.aggregate({
+  $project: {
+    _id: 0,
+  },
+});
+
+//Encontrar todos los libros escritos por un autor específico.
+use("libraryCampus");
+db.libro.aggregate(
+  {
+    $match: { autor: "Autor 1" },
+  },
+  {
+    $project: { _id: 0 },
+  }
+);
+
+//Listar todos los libros en préstamo en este momento.
+use("libraryCampus");
+db.usuario.aggregate([
+  {
+    $unwind: "$prestamos",
+  },
+  {
+    $group: {
+      _id: null,
+      prestamos: { $push: "$prestamos" },
+    },
+  },
+  {
+    $addFields: {
+      LibrosPrestadosEnesteMomento: "$prestamos",
+    },
+  },
+  {
+    $unwind: "$LibrosPrestadosEnesteMomento",
+  },
+  {
+    $project: {
+      _id: 0,
+      LibrosPrestadosEnesteMomento: 1,
+    },
+  },
+]);
+//Encontrar todos los libros que están atrasados en la devolución.
+use("libraryCampus");
+db.usuario.aggregate([
+  {
+    $unwind: "$prestamos",
+  },
+  {
+    $match: {
+      "prestamos.devolucion": { $lt: new Date().toISOString() },
+    },
+  },
+  {
+    $project: {
+      _id: 0,
+      nombre_completo: 1,
+      "prestamos.titulo": 1,
+      "prestamos.autor": 1,
+      "prestamos.devolucion": 1,
+    },
+  },
+]);
+
+//Mostrar la cantidad de ejemplares disponibles para un libro en particular.
+use("libraryCampus");
+db.libro.aggregate([
+  {
+    $match: {
+      titulo: "Libro 1",
+    },
+  },
+  {
+    $project: {
+      _id: 0,
+      titulo: 1,
+      cantidad: 1,
+      precio: 1,
+    },
+  },
+]);
+//Obtener una lista de todos los autores distintos en la biblioteca.
+use("libraryCampus");
+db.libro.distinct("genero");
+//todos los titulos
+use("libraryCampus");
+db.libro.distinct("titulo");
+use("libraryCampus");
+db.usuario.distinct("cc");
+///Encontrar los libros que han sido prestados por un usuario específico.
+use("libraryCampus");
+db.usuario.aggregate([
+  {
+    $match: {
+      nombre_completo: "Nicolas",
+    },
+  },
+  {
+    $unwind: "$prestamos",
+  },
+  {
+    $project: {
+      _id: 0,
+      prestamos: 1,
+    },
+  },
+]);
+
+//Mostrar los usuarios que tienen deudas
+use("libraryCampus");
+db.usuario.aggregate([
+  {
+    $match: {
+      deuda: { $gt: 0 },
+    },
+  },
+  {
+    $unwind: "$deuda",
+  },
+  {
+    $project: {
+      _id: 0,
+      deuda: 1,
+    },
+  },
+]);
+//Encontrar todos los libros publicados en un año específico.
+use("libraryCampus");
+db.libro.aggregate([
+  {
+    $match: {
+      fecha_publicacion: {
+        $gte: new Date("2015-01-01").toISOString(),
+        $lte: new Date("2020-12-31").toISOString(),
+      },
+    },
+  },
+]);
+
+//Listar los usuarios que tienen un libro en préstamo en este momento.
+
+use("libraryCampus");
+db.usuario.aggregate({
+  $match: {
+    prestamos: { $gt: [] },
+  },
+});
+//Mostrar la fecha de devolución más próxima para un usuario en particular.
+
+use("libraryCampus");
+db.usuario.aggregate(
+  {
+    $unwind: "$prestamos",
+  },
+  {
+    $match: {
+      $and: [
+        { cc: 12 },
+        { "prestamos.devolucion": { $gt: new Date().toISOString() } },
+      ],
+    },
+  }
+);
+
+//Encontrar todos los libros que pertenecen a una categoría específica.
+
+use("libraryCampus");
+db.libro.aggregate([
+  {
+    $match: {
+      genero: "Macho",
+    },
+  },
+]);
+//Listar los usuarios que tienen multas por un monto superior a un valor determinado.
+
+use("libraryCampus");
+db.usuario.aggregate([
+  {
+    $match: {
+      deuda: { $gt: 100 },
+    },
+  },
+]);
+
+use("libraryCampus");
+db.usuario.findOne();
+
+use("libraryCampus");
+db.usuario.findOne({
+  $and: [{ cc: 12 }, { "prestamos.titulo": "Libro 2" }],
+});
+use("libraryCampus");
+db.libro.findOne({
+  titulo: "Libro 3",
+  cantidad: { $gte: 0 },
+});
+
+use("libraryCampus");
+db.usuario.updateOne(
+  {
+    cc: 12,
+  },
+  {
+    $pull: { prestamos: { titulo: "Libro 1" } },
+  }
+);
+use("libraryCampus");
+db.libro.updateOne(
+  {
+    _id: new ObjectId("650f6c9ee202bcc52893149e"),
+  },
+  {
+    $set: {
+      titulo: "Nicolas",
+      autor: "100",
+      editorial: "a",
+      fecha_publicacion: "1990-01-10T00:00:00.000Z",
+      genero: "Macho",
+      idioma: "Espanol",
+      paginas: 100,
+      precio: 0.9,
+      sinopsis: "leanlo es kool",
+      portada: "aca va una url",
+      cantidad: 2,
+    },
+  }
+);

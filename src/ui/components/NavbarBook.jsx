@@ -53,7 +53,7 @@ export const NavbarBook = () => {
   return (
     <div className="navbar text-bg-light fixed-top">
       <div className="container-fluid">
-        <a className="navbar-brand " href="" onClick={OnHome}>
+        <a className="navbar-brand" href="" onClick={OnHome}>
           Library Campus lands
         </a>
 

@@ -45,7 +45,7 @@ export const NavarBookAdmin = () => {
     <div className="navbar text-bg-light fixed-top">
       <div className="container-fluid">
         <a className="navbar-brand" href="" onClick={OnHome}>
-          Library Campus lands ADMIN
+          <a className="TITULOTE"> Library Campus lands ADMIN</a>
         </a>
 
         <button

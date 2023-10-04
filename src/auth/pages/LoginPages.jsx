@@ -28,7 +28,7 @@ export const LoginPages = () => {
       navegate("/biblioteca", {
         replace: true,
       });
-    }else {
+    } else {
       return alert(data.message);
     }
   };
@@ -41,7 +41,7 @@ export const LoginPages = () => {
 
   return (
     <div className="contenedorLogin">
-      <div className="fondo"></div>
+      <div className="fondo" ></div>
 
       <div className="card">
         <h4 className="title">Iniciar sesion!</h4>

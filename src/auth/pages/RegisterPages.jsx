@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Autchontext } from "../context/Autchontext";
 import { useForm } from "../hooks/useForms";
@@ -26,33 +26,71 @@ export const RegisterPages = () => {
   };
 
   const OnRegister = async (eve) => {
-    eve.preventDefault();
-    const { data } = await axios.post(
-      `http://${url.host}:${url.port}/register`,
-      {
-        cc: parseInt(cedula),
+    function validarCedula(cc) {
+      const regex = /^[0-9]+$/; // Acepta solo números
+      return regex.test(cc);
+    }
+
+    // Función para validar el formato del nombre
+    function validarNombre(nombre) {
+      const regex = /^[A-Za-z\s]+$/; // Acepta solo letras y espacios
+      return regex.test(nombre);
+    }
+
+    // Función para validar el formato de la edad
+    function validarEdad(edad) {
+      const regex = /^[0-9]{1,2}$/; // Acepta números con un máximo de 2 dígitos
+      return regex.test(edad);
+    }
+
+    // Función para validar el formato del sexo (solo letras)
+    function validarSexo(sexo) {
+      const regex = /^[A-Za-z\s]+$/; // Acepta solo letras y espacios
+      return regex.test(sexo);
+    }
+
+    // Validar los campos y almacenar los resultados
+    const validaciones = {
+      cc: validarCedula(cedula),
+      nombre_completo: validarNombre(nombre_completo),
+      edad: validarEdad(edad),
+      sexo: validarSexo(sexo),
+    };
+
+    // Verificar las validaciones y mostrar los campos inválidos
+    const camposInvalidos = Object.keys(validaciones).filter((campo) => !validaciones[campo]);
+
+    if (camposInvalidos.length === 0) {
+      const NewData = {
+        cc: cedula,
         nombre_completo,
-        edad: parseInt(edad),
+        edad,
         sexo,
         contrasena,
+      };
+      const { data } = await axios.post(
+        `http://${url.host}:${url.port}/register`, NewData);
+      if (data.status === 200) {
+        navegate("/login", {
+          replace: false,
+        });
       }
-    );
-    if (data.status === 200) {
-      navegate("/login", {
-        replace: false,
-      });
-    } else {
-      return alert(data.message);
-    }
-  };
 
+    } else {
+      const erroes = camposInvalidos.join(", ")
+      alert("datos invalidos: " + erroes)
+    }
+  }
   return (
     <div className="contenedorLogin">
       <div className="fondo"></div>
       <div className="card">
+
         <h4 className="title">Crear usuario</h4>
+
         <form>
           <div className="field">
+
             <svg
               className="input-icon"
               viewBox="0 0 500 500"
@@ -66,7 +104,7 @@ export const RegisterPages = () => {
               placeholder="cedula"
               className="input-field"
               name="cedula"
-              type="text"
+              type="number"
               value={cedula}
               onChange={cambioEnLaentrada}
               required
@@ -83,7 +121,7 @@ export const RegisterPages = () => {
             <input
               autoComplete="off"
               id="nombre_completo"
-              placeholder="nomber completo"
+              placeholder="nombre completo"
               className="input-field"
               name="nombre_completo"
               type="text"
@@ -106,7 +144,7 @@ export const RegisterPages = () => {
               placeholder="edad"
               className="input-field"
               name="edad"
-              type="text"
+              type="number"
               value={edad}
               onChange={cambioEnLaentrada}
               required
@@ -135,7 +173,7 @@ export const RegisterPages = () => {
 
               <option value="Hombre">Hombre</option>
               <option value="Mujer">Mujer</option>
-              <option value="LTGBI">LTGBI</option>
+              <option value="LTGBI">LGTBQI+</option>
             </select>
           </div>
           <div className="field">
@@ -165,7 +203,10 @@ export const RegisterPages = () => {
             Regresar
           </button>
         </form>
+
       </div>
+
     </div>
+
   );
 };

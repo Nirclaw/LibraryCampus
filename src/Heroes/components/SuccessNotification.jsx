@@ -25,12 +25,7 @@ function SuccessNotification({ onClose, info }) {
         {info.data.message.msg === undefined
           ? info.data.message
           : info.data.message.msg}
-        <button
-          type="button"
-          className="btn-close"
-          data-bs-dismiss="alert"
-          aria-label="Close"
-        ></button>
+       
       </div>
     </div>
   );

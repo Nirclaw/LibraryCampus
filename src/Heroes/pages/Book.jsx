@@ -81,7 +81,8 @@ export const Book = () => {
     <>
       {" "}
       <div className="contnedor-portada">
-        <div className="portada-imagen">
+     <div className="centrar-contenido">
+     <div className="portada-imagen">
           <img
             src={info.portada}
             alt=""
@@ -163,6 +164,8 @@ export const Book = () => {
           </div>
         </div>
       </div>
+     </div>
+        
     </>
   );
 };

@@ -132,141 +132,144 @@ export const BookAdmin = () => {
   return (
     <>
       {" "}
-      <div className="contnedor-portada">
-        <div className="portada-imagen">
-          <img
-            src={info.portada}
-            alt=""
-            className="img-thumbnail animate__animated animate__bounceIn"
-          />
-        </div>
-        <div className="contenedor-info">
-          <h3 className="contenedor-titulo">
-            <input
-              placeholder={info.titulo}
-              name="Nuevotitulo"
-              id="Nuevotitulo"
-              value={Nuevotitulo}
-              onChange={cambioEnLaentrada}
+      <div className="contnedor-portada ">
+        <div className="centrar-contenido ">
+          <div className="portada-imagen">
+            <img
+              src={info.portada}
+              alt=""
+              className="img-thumbnail animate__animated animate__bounceIn"
             />
-          </h3>
-          <ul className="contenerdor-mas-info">
-            <li>
-              <b>{"Autor:  "}</b>
-              <input
-                placeholder={info.autor}
-                name="NuenoAutor"
-                value={NuenoAutor}
-                onChange={cambioEnLaentrada}
-              />
-            </li>
-            <li>
-              <b>{"Editorial:  "}</b>
-              <input
-                placeholder={info.editorial}
-                name="nuevoEditorial"
-                value={nuevoEditorial}
-                onChange={cambioEnLaentrada}
-              />
-            </li>
-            <li>
-              <b>{"Fecha de publicacion:  "}</b>
-              <input
-                placeholder={new Date(
-                  info.fecha_publicacion
-                ).toLocaleDateString()}
-                name="NuevoFecha"
-                value={NuevoFecha}
-                onChange={cambioEnLaentrada}
-                type="date"
-              />
-            </li>
-
-            <li>
-              <b>{"Genero:  "}</b>
-              <input
-                placeholder={info.genero}
-                name="NuevoGenero"
-                onChange={cambioEnLaentrada}
-                value={NuevoGenero}
-              />
-            </li>
-
-            <li>
-              <b>{"Idioma:  "}</b>
-              <input
-                placeholder={info.idioma}
-                name="NuevoIdioma"
-                onChange={cambioEnLaentrada}
-                value={NuevoIdioma}
-              />
-            </li>
-            <li>
-              <b>{"Paginas:  "}</b>
-              <input
-                placeholder={info.paginas}
-                name="NuevoPaginas"
-                onChange={cambioEnLaentrada}
-                value={NuevoPaginas}
-                type="number"
-              />
-            </li>
-            <li>
-              <b>{"Precio:  "}</b>
-              <input
-                placeholder={info.precio}
-                name="NuevoPrecio"
-                onChange={cambioEnLaentrada}
-                value={NuevoPrecio}
-              />
-            </li>
-            <li>
-              <b>{"Portada:  "}</b>
-              <input
-                placeholder={info.portada}
-                name="NuevoLink"
-                onChange={cambioEnLaentrada}
-                value={NuevoLink}
-              />
-            </li>
-            <li>
-              <b>{"Cantidad:  "}</b>
-              {info.cantidad}
-            </li>
-          </ul>
-          <h3 className="contendor-sinopsis">
-            <p className="contendor-textosinpsis">
-              <textarea
-                className="input"
-                placeholder={info.sinopsis}
-                value={NuevoSinpsis}
-                name="NuevoSinpsis"
-                onChange={cambioEnLaentrada}
-              />
-            </p>
-          </h3>
-
-          <div className="contenedor-botones">
-            <button
-              className="btn"
-              onClick={OnNavigateBack}
-              style={{ gridColumn: "1" }}
-            >
-              Cancelar
-            </button>
-            <button className="btn " onClick={Onguardar}>
-              Guardar
-            </button>
-            {showSuccessNotification && (
-              <SuccessNotification
-                onClose={closeSuccessNotification}
-                info={respuesta}
-              />
-            )}
           </div>
-          <>{Error}</>
+          <div className="contenedor-info ">
+            <h3 className="contenedor-titulo ">
+              <input
+                placeholder={info.titulo}
+                name="Nuevotitulo"
+                id="Nuevotitulo"
+                value={Nuevotitulo}
+                onChange={cambioEnLaentrada}
+              />
+            </h3>
+            <ul className="contenerdor-mas-info">
+              <li>
+                <b>{"Autor:  "}</b>
+                <input
+                  placeholder={info.autor}
+                  name="NuenoAutor"
+                  value={NuenoAutor}
+                  onChange={cambioEnLaentrada}
+                />
+              </li>
+              <li>
+                <b>{"Editorial:  "}</b>
+                <input
+                  placeholder={info.editorial}
+                  name="nuevoEditorial"
+                  value={nuevoEditorial}
+                  onChange={cambioEnLaentrada}
+                />
+              </li>
+              <li>
+                <b>{"Fecha de publicacion:  "}</b>
+                <input
+                  placeholder={new Date(
+                    info.fecha_publicacion
+                  ).toLocaleDateString()}
+                  name="NuevoFecha"
+                  value={NuevoFecha}
+                  onChange={cambioEnLaentrada}
+                  type="date"
+                />
+              </li>
 
+              <li>
+                <b>{"Genero:  "}</b>
+                <input
+                  placeholder={info.genero}
+                  name="NuevoGenero"
+                  onChange={cambioEnLaentrada}
+                  value={NuevoGenero}
+                />
+              </li>
+
+              <li>
+                <b>{"Idioma:  "}</b>
+                <input
+                  placeholder={info.idioma}
+                  name="NuevoIdioma"
+                  onChange={cambioEnLaentrada}
+                  value={NuevoIdioma}
+                />
+              </li>
+              <li>
+                <b>{"Paginas:  "}</b>
+                <input
+                  placeholder={info.paginas}
+                  name="NuevoPaginas"
+                  onChange={cambioEnLaentrada}
+                  value={NuevoPaginas}
+                  type="number"
+                />
+              </li>
+              <li>
+                <b>{"Precio:  "}</b>
+                <input
+                  placeholder={info.precio}
+                  name="NuevoPrecio"
+                  onChange={cambioEnLaentrada}
+                  value={NuevoPrecio}
+                />
+              </li>
+              <li>
+                <b>{"Portada:  "}</b>
+                <input
+                  placeholder={info.portada}
+                  name="NuevoLink"
+                  onChange={cambioEnLaentrada}
+                  value={NuevoLink}
+                />
+              </li>
+              <li>
+                <b>{"Cantidad:  "}</b>
+                {info.cantidad}
+              </li>
+            </ul>
+            <h3 className="contendor-sinopsis">
+              <p className="contendor-textosinpsis">
+                <textarea
+                  className="input"
+                  placeholder={info.sinopsis}
+                  value={NuevoSinpsis}
+                  name="NuevoSinpsis"
+                  onChange={cambioEnLaentrada}
+                />
+              </p>
+            </h3>
+
+            <div className="contenedor-botones">
+              <button
+                className="btn"
+                onClick={OnNavigateBack}
+                style={{ gridColumn: "1" }}
+              >
+                Cancelar
+              </button>
+              <button className="btn " onClick={Onguardar}>
+                Guardar
+              </button>
+              {showSuccessNotification && (
+                <SuccessNotification
+                  onClose={closeSuccessNotification}
+                  info={respuesta}
+                />
+              )}
+            </div>
+            <>{Error}</>
+
+          </div>
         </div>
+
       </div>
     </>
   );

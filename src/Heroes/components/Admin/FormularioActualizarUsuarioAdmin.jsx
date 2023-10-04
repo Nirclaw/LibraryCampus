@@ -107,7 +107,8 @@ export const FormularioActualizarUsuarioAdmin = () => {
     navigate(-1)
   };
   return (
-    <div className="Formulario-Crear-libro">
+    <div className="Formulario-Actualizar-Usuario">
+      <div className="contenedor-forumulariuoUsuario">
       <input
         className="form-control form-control-lg"
         type="text"
@@ -180,7 +181,7 @@ export const FormularioActualizarUsuarioAdmin = () => {
         ) : (
           <></>
         )}
-      </div>
+      </div></div>
     </div>
   );
 };

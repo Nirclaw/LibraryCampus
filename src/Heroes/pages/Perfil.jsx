@@ -40,7 +40,7 @@ export const Perfil = () => {
 
   return (
     <div className="Contendor-Perfil">
-      <div className="contenedor-Foto-perfil">{incial.charAt(0)}</div>
+      <div className="contenedor-Foto-perfil"><div className="ciruclo-foto">{incial.charAt(0).toUpperCase()}</div></div>
       <div className="contenedor-Nobre-perfil">{nombre}</div>
       <div className="nav-perfil nav justify-content-center">
         <Link
